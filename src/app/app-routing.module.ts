@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserInformationComponent } from './components/user-information/user-information.component';
+import { UserInformationComponent } from './user-registry/components/user-information.component';
+
 
 
 const routes: Routes = [
