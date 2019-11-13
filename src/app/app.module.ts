@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
 import { UserBasicInformationComponent } from './user-registry/user-basic-information/user-basic-information.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -17,8 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // FormsModule,
-    // ReactiveFormsModule,
+   ReactiveFormsModule,
+   FormsModule,
     BrowserAnimationsModule
   ],
   providers: [],

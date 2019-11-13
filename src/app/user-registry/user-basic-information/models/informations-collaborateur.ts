@@ -1,6 +1,7 @@
-import { Profile } from './Profile';
-
-export interface MocksBasicInformations {
+export interface Profile {
+    titre: string;
+ } 
+export interface InformationsCollaborateur {
     nom : String;
     prenom: String;
     datearriver: Date;

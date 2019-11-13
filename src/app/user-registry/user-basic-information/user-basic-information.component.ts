@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MocksBasicInformationsService } from './services/mocks-basic-informations.service';
-
+import { ProfileCollaborateur } from './services-profile/profile-collaborateur.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector:    'app-user-basic-information',
   templateUrl: './user-basic-information.component.html',
@@ -8,22 +8,30 @@ import { MocksBasicInformationsService } from './services/mocks-basic-informatio
 })
 
 export class UserBasicInformationComponent implements OnInit {
+  form = new FormGroup({
+    nom: new FormControl('', Validators.required),
+    prenom: new FormControl('', Validators.required),
+    dateArrive: new FormControl('', Validators.required),
+    telephone: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email])    
+  });
+  
 
   profile: Array<object>;
-  model = {};
 
-  constructor( readonly  informations: MocksBasicInformationsService ) { }
-
-  ngOnInit() {
-    this.informations.getProfile().subscribe(res => {
+  constructor( readonly  cordonnées: ProfileCollaborateur ) { 
+    this.cordonnées.getProfile().subscribe(res => {
       this.profile = res;
     });
   }
+  ngOnInit() {
+  }
 
-//   submitForm(event: Event) {
-//     event.preventDefault();
-//     console.log("formulaire");
-//     console.log("Nom: ",this.model['nom']);
-//     // really you would be using an event emitter
-// }
+  ajouterCollaborateur(){
+    console.log(this.form.value);
+   }
+
+   annulerForm(){
+    this.form.reset();
+   }
 }
