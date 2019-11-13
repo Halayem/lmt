@@ -8,7 +8,11 @@ const routes: Routes = [
   {
     path:       'user-information',
     component:  UserInformationComponent
-  }
+  },
+  { path: '',
+    redirectTo: '/user-information',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({
