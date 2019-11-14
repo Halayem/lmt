@@ -6,8 +6,8 @@
                 <input type="text" placeholder="Entreprise" aria-label="Number" matInput
                     [matAutocomplete]="autoenteprise" formControlName="entrepriseName">
                 <mat-autocomplete #autoenteprise="matAutocomplete">
-                    <mat-option *ngFor="let option of ['Orange', 'SNCF', 'BNP', 'Veolia', 'EDF']" [value]="option">
-                        {{option}}
+                    <mat-option *ngFor="let option of (filteredEntreprise$ | async)" [value]="option.name">
+                        {{option.name}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -17,18 +17,12 @@
                 <div *ngIf="entrepriseName.errors.required">
                     Nom de l'entreprise requis
                 </div>
-                <div *ngIf="entrepriseName.errors.minlength">
-                    3 caracteres minimum
-                </div>
-                <div *ngIf="entrepriseName.errors.maxlength">
-                    50 caracteres maximum
-                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <mat-form-field class="example-full-width">
-                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerStart" placeholder="Du"
+                    <input matInput [min]="dateStartMin" [max]="dateStartMax" [matDatepicker]="pickerStart" placeholder="Du"
                         formControlName="dateStart">
                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                     <mat-datepicker #pickerStart></mat-datepicker>
@@ -42,7 +36,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <mat-form-field class="example-full-width">
-                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerEnd" placeholder="Au"
+                    <input matInput [min]="dateEndMin" [max]="dateEndMax" [matDatepicker]="pickerEnd" placeholder="Au"
                         formControlName="dateEnd">
                     <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                     <mat-datepicker #pickerEnd></mat-datepicker>
@@ -65,6 +59,13 @@
                 <div *ngIf="projet.errors.required">
                     Nom du projet requis
                 </div>
+
+                <div *ngIf="projet.errors.minlength">
+                    3 caracteres minimum
+                </div>
+                <div *ngIf="projet.errors.maxlength">
+                    50 caracteres maximum
+                </div>
             </div>
         </div>
 
@@ -72,9 +73,7 @@
             <mat-form-field class="example-full-width">
                 <mat-label>Role</mat-label>
                 <mat-select formControlName="role">
-                    <mat-option
-                        *ngFor="let role of ['Scrum Master', 'po', 'lead dev', 'dev senior', 'dev confirmé', 'big data senior', 'big data confirmé']"
-                        [value]="role">
+                    <mat-option *ngFor="let role of allRole" [value]="role">
                         {{role}}
                     </mat-option>
                 </mat-select>

@@ -4,6 +4,7 @@ import { Mission } from '../model/mission';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Entreprise } from '../model/entreprise';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,11 @@ export class UserExperiancenceService {
     return this.http.post(url, mission);
   }
 
-  getAllEntreprise(): Observable<Entreprise[]> {
+  getAllEntreprise(search: string): Observable<Entreprise[]> {
     const url = `assets/json/entreprises.json`;
-    return this.http.get<Entreprise[]>(url);
+    return this.http.get<Entreprise[]>(url).pipe(
+      map(entreprises => entreprises.filter((ent) => search && ent.name.toLowerCase().indexOf(search.toLowerCase().trim()) > -1))
+    );
   }
 
   getAllTechnos(): Observable<string[]> {

@@ -13,6 +13,8 @@ import { UserExperianceComponent } from './user-registry/user-experiance/compone
 
 import { MaterialModule } from './material/material.module';
 import { UserExperiancenceService } from './user-registry/user-experiance/service/user-experiancence.service';
+import { UserExperianceResolverService } from './user-registry/user-experiance/service/user-experiance-resolver.service';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { UserExperiancenceService } from './user-registry/user-experiance/servic
     MaterialModule,
 
   ],
-  providers: [UserExperiancenceService],
+  providers: [UserExperiancenceService, UserExperianceResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

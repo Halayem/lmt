@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Renault",
+        "address": "Paris"
+    },
+    {
+        "name": "Orange",
+        "address": "Paris"
+    },
+    {
+        "name": "EDF",
+        "address": "Paris"
+    },
+    {
+        "name": "SNCF",
+        "address": "Paris"
+    },
+    {
+        "name": "Veolia",
+        "address": "Paris"
+    }
+]
