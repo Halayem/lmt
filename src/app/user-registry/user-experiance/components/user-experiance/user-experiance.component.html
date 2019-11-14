@@ -1,43 +1,77 @@
 <div class=" order-md-1">
     <h4 class="mb-3">Mission</h4>
-    <form class="needs-validation" novalidate>
+    <form [formGroup]="missionForm" (ngSubmit)="saveMission()">
         <div class="mb-3">
             <mat-form-field class="example-full-width">
-                <input type="text" placeholder="Entreprise" aria-label="Number" matInput [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of options" [value]="option">
+                <input type="text" placeholder="Entreprise" aria-label="Number" matInput
+                    [matAutocomplete]="autoenteprise" formControlName="entrepriseName">
+                <mat-autocomplete #autoenteprise="matAutocomplete">
+                    <mat-option *ngFor="let option of ['Orange', 'SNCF', 'BNP', 'Veolia', 'EDF']" [value]="option">
                         {{option}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
+            <div *ngIf="entrepriseName.invalid && (entrepriseName.dirty || entrepriseName.touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="entrepriseName.errors.required">
+                    Nom de l'entreprise requis
+                </div>
+                <div *ngIf="entrepriseName.errors.minlength">
+                    3 caracteres minimum
+                </div>
+                <div *ngIf="entrepriseName.errors.maxlength">
+                    50 caracteres maximum
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <mat-form-field class="example-full-width">
-                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerStart" placeholder="Du">
+                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerStart" placeholder="Du"
+                        formControlName="dateStart">
                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                     <mat-datepicker #pickerStart></mat-datepicker>
                 </mat-form-field>
+                <div *ngIf="dateStart.invalid && (dateStart.dirty || dateStart.touched)" class="alert alert-danger">
+
+                    <div *ngIf="dateStart.errors.required">
+                        Date début requis
+                    </div>
+                </div>
             </div>
             <div class="col-md-6 mb-3">
                 <mat-form-field class="example-full-width">
-                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerEnd" placeholder="Au">
+                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerEnd" placeholder="Au"
+                        formControlName="dateEnd">
                     <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                     <mat-datepicker #pickerEnd></mat-datepicker>
                 </mat-form-field>
+                <div *ngIf="dateEnd.invalid && (dateEnd.dirty || dateEnd.touched)" class="alert alert-danger">
+
+                    <div *ngIf="dateEnd.errors.required">
+                        Date fin requis
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="mb-3">
             <mat-form-field class="example-full-width">
-                <input matInput placeholder="Projet">
+                <input matInput placeholder="Projet" formControlName="projet">
             </mat-form-field>
+            <div *ngIf="projet.invalid && (projet.dirty || projet.touched)" class="alert alert-danger">
+
+                <div *ngIf="projet.errors.required">
+                    Nom du projet requis
+                </div>
+            </div>
         </div>
 
         <div class="mb-3">
             <mat-form-field class="example-full-width">
                 <mat-label>Role</mat-label>
-                <mat-select>
+                <mat-select formControlName="role">
                     <mat-option
                         *ngFor="let role of ['Scrum Master', 'po', 'lead dev', 'dev senior', 'dev confirmé', 'big data senior', 'big data confirmé']"
                         [value]="role">
@@ -45,9 +79,22 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <div *ngIf="role.invalid && (role.dirty || role.touched)" class="alert alert-danger">
+
+                <div *ngIf="role.errors.required">
+                    Rôle requis
+                </div>
+            </div>
         </div>
         <div class="mb-3">
-            <angular-editor  [config]="config"></angular-editor>
+            <angular-editor [config]="config" formControlName="descriptionRole"></angular-editor>
+            <div *ngIf="descriptionRole.invalid && (descriptionRole.dirty || descriptionRole.touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="descriptionRole.errors.required">
+                    Description du rôle requis
+                </div>
+            </div>
         </div>
 
         <div class="mb-3">
@@ -68,6 +115,12 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
+            <div *ngIf="techno.invalid && (techno.dirty || techno.touched)" class="alert alert-danger">
+
+                <div *ngIf="techno.errors.required">
+                    Techno requis
+                </div>
+            </div>
 
         </div>
 

@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { UserExperiancenceService } from '../../service/user-experiancence.service';
 
 @Component({
   selector: 'app-user-experiance',
@@ -12,6 +13,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 export class UserExperianceComponent implements OnInit {
 
+  missionForm: FormGroup;
   visible = true;
   selectable = true;
   removable = true;
@@ -22,8 +24,8 @@ export class UserExperianceComponent implements OnInit {
   technos: string[] = [];
   allTechnos: string[] = ['Angular', 'Java', '.Net', 'React', 'Python', 'PHP', 'C++', 'QT'];
 
-  @ViewChild('technoInput', {static: false}) technoInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('technoInput', { static: false }) technoInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
 
   config: AngularEditorConfig = {
@@ -51,29 +53,41 @@ export class UserExperianceComponent implements OnInit {
       },
     ]
   };
-  constructor() {
+  constructor(private fb: FormBuilder, private userExperiancenceService: UserExperiancenceService) {
     this.filteredTechnos = this.technoCtrl.valueChanges.pipe(
-        startWith(null),
-        map((fruit: string | null) => fruit ? this._filter(fruit) : this.allTechnos.slice()));
+      startWith(null),
+      map((fruit: string | null) => fruit ? this._filter(fruit) : this.allTechnos.slice()));
   }
 
   ngOnInit() {
+    this.cretaeForm();
 
   }
 
+  cretaeForm() {
+    this.missionForm = this.fb.group({
+      entrepriseName: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(3)]],
+      dateStart: ['', [Validators.required]],
+      dateEnd: ['', [Validators.required]],
+      projet: ['', [Validators.required]],
+      role: ['', [Validators.required]],
+      descriptionRole: ['', [Validators.required]],
+      technos: ['', [Validators.required]],
+    });
+  }
+
   add(event: MatChipInputEvent): void {
-    // Add fruit only when MatAutocomplete is not open
-    // To make sure this does not conflict with OptionSelected Event
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
 
-      // Add our fruit
       if ((value || '').trim()) {
         this.technos.push(value.trim());
+        this.missionForm.patchValue({
+          technos: this.technos
+        });
       }
 
-      // Reset the input value
       if (input) {
         input.value = '';
       }
@@ -87,6 +101,9 @@ export class UserExperianceComponent implements OnInit {
 
     if (index >= 0) {
       this.technos.splice(index, 1);
+      this.missionForm.patchValue({
+        technos: this.technos
+      });
     }
   }
 
@@ -94,6 +111,9 @@ export class UserExperianceComponent implements OnInit {
     this.technos.push(event.option.viewValue);
     this.technoInput.nativeElement.value = '';
     this.technoCtrl.setValue(null);
+    this.missionForm.patchValue({
+      technos: this.technos
+    });
   }
 
   private _filter(value: string): string[] {
@@ -101,5 +121,22 @@ export class UserExperianceComponent implements OnInit {
 
     return this.allTechnos.filter(fruit => fruit.toLowerCase().indexOf(filterValue) > -1);
   }
+
+  saveMission(): void {
+    console.log(this.missionForm.value);
+    this.userExperiancenceService.saveMission(this.missionForm.value).subscribe(
+      res => console.log(res),
+      err => console.log(err)
+    );
+  }
+
+  get entrepriseName() { return this.missionForm.get('entrepriseName'); }
+  get dateStart() { return this.missionForm.get('dateStart'); }
+  get dateEnd() { return this.missionForm.get('dateEnd'); }
+  get projet() { return this.missionForm.get('projet'); }
+  get role() { return this.missionForm.get('role'); }
+  get descriptionRole() { return this.missionForm.get('descriptionRole'); }
+  get techno() { return this.missionForm.get('technos'); }
+
 
 }

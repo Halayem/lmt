@@ -12,6 +12,7 @@ import { UserInformationComponent } from './user-registry/components/user-inform
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance/user-experiance.component';
 
 import { MaterialModule } from './material/material.module';
+import { UserExperiancenceService } from './user-registry/user-experiance/service/user-experiancence.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { MaterialModule } from './material/material.module';
     MaterialModule,
 
   ],
-  providers: [],
+  providers: [UserExperiancenceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
