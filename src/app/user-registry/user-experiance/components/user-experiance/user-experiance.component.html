@@ -115,7 +115,7 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <div *ngIf="techno.invalid && (techno.dirty || techno.touched)" class="alert alert-danger">
+            <div *ngIf="techno.invalid && (technoCtrl.dirty || technoCtrl.touched)" class="alert alert-danger">
 
                 <div *ngIf="techno.errors.required">
                     Techno requis
