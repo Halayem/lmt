@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import {Profile} from '../models/informations-collaborateur';
+import { HttpClient } from '@angular/common/http'; 
+import { Observable } from 'rxjs/';
+import { Profile } from '../models/informations-collaborateur';
 
 @Injectable({
   providedIn: 'root'
@@ -8,31 +9,11 @@ import {Profile} from '../models/informations-collaborateur';
 
 export class ProfileCollaborateur {
 
-  profile : Array<Profile> =[
-    {
-      titre: "Développeur Front-End"
-    },
-    {
-      titre: "Développeur Back-End"
-    },
-    {
-      titre: "Développeur Full-Stack"
-    },
-    {
-      titre: "Développeur Big Data"
-    },
-    {
-      titre: "Devops"
-    },
-    {
-      titre: "Chef de Projets"
-    }
 
-  ]
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
-
-  getProfile(){
-    return of(this.profile);
+  public getProfileCollaborateur(): Observable<Profile[]> {
+    return this.http.get<Profile[]>("./assets/profile.json");
   }
+
 }

@@ -1,11 +1,11 @@
 export interface Profile {
-    titre: string;
+    titre: String;
  } 
 export interface InformationsCollaborateur {
     nom : String;
     prenom: String;
-    datearriver: Date;
-    profile: Profile;
+    dateArrive: Date;
     mail: String;
-    numtelephone: Number;
+    telephone: Number;
+    profile: Profile;
 }
