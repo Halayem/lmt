@@ -5,7 +5,6 @@ export const lmtWysiwygHtmlEditorConfig: AngularEditorConfig = {
     spellcheck: true,
     height: '15rem',
     minHeight: '5rem',
-    // placeholder: 'Description rôle',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
