@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UserExperiancenceService } from './user-experiancence.service';
 import { forkJoin } from 'rxjs';
+import { SkillService } from './skill.service';
+import { RoleService } from './role.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +11,12 @@ import { forkJoin } from 'rxjs';
 export class UserExperianceResolverService implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return forkJoin(
-      // this.userExperiancenceService.getAllEntreprise(),
-      this.userExperiancenceService.getAllRole(),
-      this.userExperiancenceService.getAllTechnos()
-    )
+      this.roleService.getRoles(),
+      this.skillService.getSkills()
+    );
   }
 
-  constructor(private userExperiancenceService: UserExperiancenceService) { }
+  constructor(
+    readonly skillService: SkillService,
+    readonly roleService: RoleService) { }
 }

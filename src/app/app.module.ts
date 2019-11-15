@@ -8,13 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
 
-import { UserInformationComponent } from './user-registry/components/user-information.component';
-import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance/user-experiance.component';
-
 import { MaterialModule } from './material/material.module';
 import { UserExperiancenceService } from './user-registry/user-experiance/service/user-experiancence.service';
 import { UserExperianceResolverService } from './user-registry/user-experiance/service/user-experiance-resolver.service';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { UserInformationComponent } from './user-registry/components/user-information.component';
+import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,7 @@ import { MAT_DATE_LOCALE } from '@angular/material';
     MaterialModule,
 
   ],
-  providers: [UserExperiancenceService, UserExperianceResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },],
+  providers: [UserExperiancenceService, UserExperianceResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
