@@ -7,8 +7,8 @@ import { UserInformationComponent } from './user-registry/components/user-inform
 import { UserBasicInformationComponent } from './user-registry/user-basic-information/components/user-basic-information.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { PhoneMaskDirective } from './user-registry/user-basic-information/directives/phone-mask.directive';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PhoneMaskDirective } from './shared/directives/phone-mask.directive';
 
 import { HttpClientModule } from '@angular/common/http'; 
 
@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
    ReactiveFormsModule,
    HttpClientModule,
+   BsDatepickerModule.forRoot(),
    FormsModule,
     BrowserAnimationsModule
   ],
