@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Project } from '../model/project';
 import { Observable } from 'rxjs';
 
@@ -9,7 +8,7 @@ const BASE_URL = 'assets/data';
 @Injectable({
   providedIn: 'root'
 })
-export class UserExperiancenceService {
+export class UserProjectService {
   constructor(readonly http: HttpClient) { }
 
   saveProject(project: Project): Observable<any> {

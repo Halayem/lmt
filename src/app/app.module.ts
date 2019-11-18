@@ -9,8 +9,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from './material/material.module';
-import { UserExperiancenceService } from './user-registry/user-project/service/user-experiancence.service';
-import { UserExperianceResolverService } from './user-registry/user-project/service/user-experiance-resolver.service';
+import { UserProjectService } from './user-registry/user-project/service/user-project.service';
+import { UserProjectResolverService } from './user-registry/user-project/service/user-project-resolver.service';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
 import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
@@ -32,7 +32,7 @@ import { UserProjectComponent } from './user-registry/user-project/components/us
     MaterialModule,
 
   ],
-  providers: [UserExperiancenceService, UserExperianceResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
+  providers: [UserProjectService, UserProjectResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

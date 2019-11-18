@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { startWith, map } from 'rxjs/operators';
 import * as R from 'ramda';
 
-import { UserExperiancenceService } from '../service/user-experiancence.service';
+import { UserProjectService } from '../service/user-project.service';
 import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditorConfig';
 
 
@@ -37,9 +37,9 @@ export class UserProjectComponent implements OnInit {
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
   constructor(
-    readonly fb: FormBuilder,
-    readonly actRoute: ActivatedRoute,
-    readonly userExperiancenceService: UserExperiancenceService) {
+    readonly formBuilder: FormBuilder,
+    readonly activatedRoute: ActivatedRoute,
+    readonly userProjectService: UserProjectService) {
     this.filteredSkills = this.skillCtrl.valueChanges.pipe(
       startWith(null),
       map((skill: string | null) => skill ? this._filterDataskill(skill) : this.dataSkills.slice()));
@@ -74,7 +74,7 @@ export class UserProjectComponent implements OnInit {
 
 
   createUserProjectForm() {
-    this.userProjectForm = this.fb.group({
+    this.userProjectForm = this.formBuilder.group({
       subject: ['', [Validators.required]],
       description: ['', [Validators.required]],
       enterpriseName: ['', [Validators.required]],
@@ -86,7 +86,7 @@ export class UserProjectComponent implements OnInit {
   }
 
   getSkillsAndRoles(): void {
-    this.actRoute.data.subscribe(res => {
+    this.activatedRoute.data.subscribe(res => {
       [this.roles, this.dataSkills] = res.data;
     });
   }
@@ -138,7 +138,7 @@ export class UserProjectComponent implements OnInit {
   saveUserProject(): void {
     if (this.userProjectForm.valid) {
       console.log(this.userProjectForm.value);
-      this.userExperiancenceService.saveProject(this.userProjectForm.value).subscribe(
+      this.userProjectService.saveProject(this.userProjectForm.value).subscribe(
         res => console.log(res),
         err => console.log(err)
       );
