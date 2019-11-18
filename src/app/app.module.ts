@@ -9,17 +9,17 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from './material/material.module';
-import { UserExperiancenceService } from './user-registry/user-experiance/service/user-experiancence.service';
-import { UserExperianceResolverService } from './user-registry/user-experiance/service/user-experiance-resolver.service';
+import { UserExperiancenceService } from './user-registry/user-project/service/user-experiancence.service';
+import { UserExperianceResolverService } from './user-registry/user-project/service/user-experiance-resolver.service';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
-import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
+import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserInformationComponent,
-    UserExperianceComponent,
+    UserProjectComponent,
   ],
   imports: [
     BrowserModule,
