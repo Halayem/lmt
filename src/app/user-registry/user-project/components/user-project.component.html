@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="mb-3">
-            <angular-editor [config]="config" formControlName="description"></angular-editor>
+            <angular-editor [config]="configTextEditor" [placeholder]="'Description du Projet'" formControlName="description"></angular-editor>
             <div *ngIf="userProjectForm.get('description').invalid && (userProjectForm.get('description').dirty || userProjectForm.get('description').touched)" class="alert alert-danger">
 
                 <div *ngIf="userProjectForm.get('description').errors.required">
@@ -83,7 +83,7 @@
         <div class="mb-3">
             <mat-form-field class="w-100">
                 <mat-chip-list #chipList>
-                    <mat-chip *ngFor="let skill of skillsSelected" [selectable]="true" [removable]="true"
+                    <mat-chip *ngFor="let skill of selectedSkills" [selectable]="true" [removable]="true"
                         (removed)="removeSkill(skill)">
                         {{skill}}
                         <mat-icon matChipRemove >cancel</mat-icon>

@@ -23,7 +23,7 @@ export class UserProjectComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   skillCtrl = new FormControl();
   filteredSkills: Observable<string[]>;
-  skillsSelected: string[] = [];
+  selectedSkills: string[] = [];
   dataSkills: string[];
   roles: string[];
   minStartDate: Date;
@@ -35,22 +35,21 @@ export class UserProjectComponent implements OnInit {
   @ViewChild('autocompletionSkill', { static: false }) matAutocomplete: MatAutocomplete;
 
 
-  config: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
+  configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
   constructor(
     readonly fb: FormBuilder,
     readonly actRoute: ActivatedRoute,
     readonly userExperiancenceService: UserExperiancenceService) {
     this.filteredSkills = this.skillCtrl.valueChanges.pipe(
       startWith(null),
-      map((skill: string | null) => skill ? this._filter(skill) : this.dataSkills.slice()));
+      map((skill: string | null) => skill ? this._filterDataskill(skill) : this.dataSkills.slice()));
   }
 
   ngOnInit() {
-    this.cretaeForm();
+    this.createUserProjectForm();
     this.getSkillsAndRoles();
     this.updateMinEndDate();
     this.updateMaxStartDate();
-    this.config.placeholder = 'Description du projet';
   }
 
   updateMinEndDate() {
@@ -74,7 +73,7 @@ export class UserProjectComponent implements OnInit {
   }
 
 
-  cretaeForm() {
+  createUserProjectForm() {
     this.userProjectForm = this.fb.group({
       subject: ['', [Validators.required]],
       description: ['', [Validators.required]],
@@ -97,11 +96,11 @@ export class UserProjectComponent implements OnInit {
       const input = event.input;
       const value = event.value;
       if ((value || '').trim()) {
-        if (!this.skillsSelected.includes(value.trim())) {
-          this.skillsSelected.push(value.trim());
+        if (!this.selectedSkills.includes(value.trim())) {
+          this.selectedSkills.push(value.trim());
         }
         this.userProjectForm.patchValue({
-          skills: this.skillsSelected
+          skills: this.selectedSkills
         });
       }
       if (input) {
@@ -113,24 +112,24 @@ export class UserProjectComponent implements OnInit {
   }
 
   removeSkill(skill: string): void {
-    this.skillsSelected = R.filter(currentSkill => currentSkill !== skill, this.skillsSelected);
+    this.selectedSkills = R.filter(currentSkill => currentSkill !== skill, this.selectedSkills);
     this.userProjectForm.patchValue({
-      skills: this.skillsSelected
+      skills: this.selectedSkills
     });
   }
 
   selectedSkillFromAoutocomplete(event: MatAutocompleteSelectedEvent): void {
-    if (!this.skillsSelected.includes(event.option.viewValue)) {
-      this.skillsSelected.push(event.option.viewValue);
+    if (!this.selectedSkills.includes(event.option.viewValue)) {
+      this.selectedSkills.push(event.option.viewValue);
     }
     this.skillInput.nativeElement.value = '';
     this.skillCtrl.setValue(null);
     this.userProjectForm.patchValue({
-      skills: this.skillsSelected
+      skills: this.selectedSkills
     });
   }
 
-  private _filter(value: string): string[] {
+  private _filterDataskill(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.dataSkills.filter(skill => value && skill.toLowerCase().indexOf(filterValue) > -1);
