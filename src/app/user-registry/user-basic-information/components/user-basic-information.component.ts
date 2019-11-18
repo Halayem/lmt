@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ProfileCollaborateur } from '../services-profile/profile-collaborateur.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from '../models/informations-collaborateur';
-
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector:    'app-user-basic-information',
@@ -24,7 +24,7 @@ export class UserBasicInformationComponent {
     
   });  
 
-  constructor( readonly  serviceCordonnees: ProfileCollaborateur ) { 
+  constructor( readonly  serviceCordonnees: ProfileCollaborateur, readonly router: Router ) { 
     this.serviceCordonnees.getProfileCollaborateur().subscribe(data => {
       console.log("Les profiles des Collaborateurs: ",data);
       this.profile = data;
@@ -33,6 +33,7 @@ export class UserBasicInformationComponent {
 
   ajouterCollaborateur(){
     console.log("Cordonnees Collaborateur : ",this.form.value);
+    this.router.navigate(['/user-experiences']);
    }
 
 }

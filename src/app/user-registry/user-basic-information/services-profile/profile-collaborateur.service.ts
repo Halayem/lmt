@@ -13,7 +13,7 @@ export class ProfileCollaborateur {
   constructor(readonly http: HttpClient) { }
 
   public getProfileCollaborateur(): Observable<Profile[]> {
-    return this.http.get<Profile[]>("./assets/profile.json");
+    return this.http.get<Profile[]>("./assets/data/profile.json");
   }
 
 }

@@ -23,8 +23,8 @@ import { UserExperianceComponent } from './user-registry/user-experiance/compone
     AppComponent,
     UserInformationComponent,
     PhoneMaskDirective,
-    UserBasicInformationComponent
-    UserExperianceComponent,
+    UserBasicInformationComponent,
+    UserExperianceComponent
   ],
   imports: [
     BrowserModule,
