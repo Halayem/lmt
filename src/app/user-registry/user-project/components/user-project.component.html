@@ -6,7 +6,8 @@
                 <input type="text" placeholder="Intitulé du projet" matInput formControlName="subject">
 
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('subject').invalid && (userProjectForm.get('subject').dirty || userProjectForm.get('subject').touched)" class="alert alert-danger">
+            <div *ngIf="userProjectForm.get('subject').invalid && (userProjectForm.get('subject').dirty || userProjectForm.get('subject').touched)"
+                class="alert alert-danger">
 
                 <div *ngIf="userProjectForm.get('subject').errors.required">
                     Intitulé du projet requis
@@ -14,8 +15,10 @@
             </div>
         </div>
         <div class="mb-3">
-            <angular-editor [config]="configTextEditor" [placeholder]="'Description du Projet'" formControlName="description"></angular-editor>
-            <div *ngIf="userProjectForm.get('description').invalid && (userProjectForm.get('description').dirty || userProjectForm.get('description').touched)" class="alert alert-danger">
+            <angular-editor [config]="configTextEditor" [placeholder]="'Description du Projet'"
+                formControlName="description"></angular-editor>
+            <div *ngIf="userProjectForm.get('description').invalid && (userProjectForm.get('description').dirty || userProjectForm.get('description').touched)"
+                class="alert alert-danger">
 
                 <div *ngIf="userProjectForm.get('description').errors.required">
                     Description du projet requis
@@ -43,7 +46,8 @@
                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                     <mat-datepicker #pickerStart></mat-datepicker>
                 </mat-form-field>
-                <div *ngIf="userProjectForm.get('startDate').invalid && (userProjectForm.get('startDate').dirty || userProjectForm.get('startDate').touched)" class="alert alert-danger">
+                <div *ngIf="userProjectForm.get('startDate').invalid && (userProjectForm.get('startDate').dirty || userProjectForm.get('startDate').touched)"
+                    class="alert alert-danger">
 
                     <div *ngIf="userProjectForm.get('startDate').errors.required">
                         Date début requis
@@ -71,7 +75,8 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('role').invalid && (userProjectForm.get('role').dirty || userProjectForm.get('role').touched)" class="alert alert-danger">
+            <div *ngIf="userProjectForm.get('role').invalid && (userProjectForm.get('role').dirty || userProjectForm.get('role').touched)"
+                class="alert alert-danger">
 
                 <div *ngIf="userProjectForm.get('role').errors.required">
                     Rôle requis
@@ -83,22 +88,30 @@
         <div class="mb-3">
             <mat-form-field class="w-100">
                 <mat-chip-list #chipList>
-                    <mat-chip *ngFor="let skill of selectedSkills" [selectable]="true" [removable]="true"
+                    <mat-chip 
+                        *ngFor="let skill of selectedSkills" 
+                        [selectable]="true" 
+                        [removable]="true"
                         (removed)="removeSkill(skill)">
                         {{skill}}
-                        <mat-icon matChipRemove >cancel</mat-icon>
+                    <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
-                    <input placeholder="Skills..." #skillInput [formControl]="skillCtrl" [matAutocomplete]="autocompletionSkill"
-                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                        [matChipInputAddOnBlur]="false" (matChipInputTokenEnd)="addSkill($event)">
+                    <input placeholder="Skills..." #skillInput 
+                        [formControl]="skillCtrl"
+                        [matAutocomplete]="autocompletionSkill" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
+                        (matChipInputTokenEnd)="addSkill($event)">
                 </mat-chip-list>
-                <mat-autocomplete #autocompletionSkill="matAutocomplete" (optionSelected)="selectedSkillFromAoutocomplete($event)">
-                    <mat-option *ngFor="let skill of filteredSkills | async" [value]="skill">
+                <mat-autocomplete #autocompletionSkill="matAutocomplete"
+                    (optionSelected)="selectedSkillFromAoutocomplete($event)">
+                    <mat-option 
+                        *ngFor="let skill of filteredSkills | async" 
+                        [value]="skill">
                         {{skill}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('skills').invalid && (skillCtrl.dirty || skillCtrl.touched)" class="alert alert-danger">
+            <div *ngIf="userProjectForm.get('skills').invalid && (skillCtrl.dirty || skillCtrl.touched)"
+                class="alert alert-danger">
 
                 <div *ngIf="userProjectForm.get('skills').errors.required">
                     Skill requis
