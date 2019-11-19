@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ProfileCollaborateur } from '../services-profile/profile-collaborateur.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from '../models/informations-collaborateur';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector:    'app-user-basic-information',
@@ -12,14 +12,17 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export class UserBasicInformationComponent {
 
+  minDate: Date;
+  maxDate: Date;
+
   profile: Array<Profile>;
 
    form = new FormGroup({
-    nom: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
-    prenom: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
-    dateArrive: new FormControl('', Validators.required),
-    telephone: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/[^@]+@[^\.]+\..+/)]),
+    lastName: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
+    name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
+    dateArrival: new FormControl('', Validators.required),
+    mailProfesional: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/[^@]+@[^\.]+\..+/)]),
+    phoneNumber: new FormControl('', Validators.required),
     profile: new FormControl('', Validators.required)
     
   });  
@@ -29,11 +32,17 @@ export class UserBasicInformationComponent {
       console.log("Les profiles des Collaborateurs: ",data);
       this.profile = data;
     });
+    this.minDate = new Date(2017, 1, 1);
+    this.maxDate = new Date();
   }
 
   ajouterCollaborateur(){
     console.log("Cordonnees Collaborateur : ",this.form.value);
     this.router.navigate(['/user-experiences']);
+    
    }
+   onDateChange(newDate: Date) {
+    console.log(newDate);
+  }
 
 }

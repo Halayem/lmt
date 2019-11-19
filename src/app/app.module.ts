@@ -15,14 +15,15 @@ import { UserInformationComponent } from './user-registry/components/user-inform
 import { UserBasicInformationComponent } from './user-registry/user-basic-information/components/user-basic-information.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { PhoneMaskDirective } from './shared/directives/phone-mask.directive';
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
+
+import { NgxMaskModule } from 'ngx-mask';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     UserInformationComponent,
-    PhoneMaskDirective,
     UserBasicInformationComponent,
     UserExperianceComponent
   ],
@@ -30,6 +31,7 @@ import { UserExperianceComponent } from './user-registry/user-experiance/compone
     BrowserModule,
     AppRoutingModule,
    ReactiveFormsModule,
+   NgxMaskModule.forRoot(),
    HttpClientModule,
    BsDatepickerModule.forRoot(),
     BrowserAnimationsModule,

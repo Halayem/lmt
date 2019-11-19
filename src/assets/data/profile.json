@@ -1,8 +1,8 @@
 [
-    {"titre": "Développeur Front-End"},
-    {"titre": "Développeur Back-End"},
-    {"titre": "Développeur Full-Stack"},
-    {"titre": "Développeur Big Data"},
-    {"titre": "Devops"},
-    {"titre": "Chef de Projets"}    
+    {"titleProfile": "Développeur Front-End"},
+    {"titleProfile": "Développeur Back-End"},
+    {"titleProfile": "Développeur Full-Stack"},
+    {"titleProfile": "Développeur Big Data"},
+    {"titleProfile": "Devops"},
+    {"titleProfile": "Chef de Projets"}    
 ]
