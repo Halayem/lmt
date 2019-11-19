@@ -41,8 +41,5 @@ export class UserBasicInformationComponent {
     this.router.navigate(['/user-experiences']);
     
    }
-   onDateChange(newDate: Date) {
-    console.log(newDate);
-  }
 
 }
