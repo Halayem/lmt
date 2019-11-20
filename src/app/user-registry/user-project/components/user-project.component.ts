@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import * as R from 'ramda';
 
 import { UserProjectService } from '../service/user-project.service';
 import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditorConfig';
+import { Project } from '../model/project';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class UserProjectComponent implements OnInit {
   @ViewChild('skillInput', { static: false }) skillInput: ElementRef<HTMLInputElement>;
   @ViewChild('autocompletionSkill', { static: false }) matAutocomplete: MatAutocomplete;
 
+  @Output() saveProject: EventEmitter<Project> = new EventEmitter<Project>();
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
   constructor(
@@ -137,7 +139,7 @@ export class UserProjectComponent implements OnInit {
 
   saveUserProject(): void {
     if (this.userProjectForm.valid) {
-      console.log(this.userProjectForm.value);
+      this.saveProject.emit(this.userProjectForm.value);
       this.userProjectService.saveProject(this.userProjectForm.value).subscribe(
         res => console.log(res),
         err => console.log(err)

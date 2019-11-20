@@ -14,12 +14,14 @@ import { UserProjectResolverService } from './user-registry/user-project/service
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
 import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
+import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserInformationComponent,
     UserProjectComponent,
+    UserExperianceComponent,
   ],
   imports: [
     BrowserModule,
