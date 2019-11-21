@@ -23,9 +23,13 @@ export class UserProjectComponent implements OnInit {
   private userProjectForm: FormGroup;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   skillCtrl = new FormControl();
+  roleCtrl = new FormControl();
   filteredSkills: Observable<string[]>;
+  filteredRoles: Observable<string[]>;
   selectedSkills: string[] = [];
+  selectedRoles: string[] = [];
   dataSkills: string[];
+  dataRoles: string[];
   roles: string[];
   minStartDate: Date;
   maxStartDate = new Date();
@@ -34,6 +38,9 @@ export class UserProjectComponent implements OnInit {
 
   @ViewChild('skillInput', { static: false }) skillInput: ElementRef<HTMLInputElement>;
   @ViewChild('autocompletionSkill', { static: false }) matAutocomplete: MatAutocomplete;
+
+  @ViewChild('roleInput', { static: false }) roleInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autocompletionRole', { static: false }) autocompletionRole: MatAutocomplete;
 
   @Output() saveProject: EventEmitter<Project> = new EventEmitter<Project>();
 
@@ -44,7 +51,11 @@ export class UserProjectComponent implements OnInit {
     readonly userProjectService: UserProjectService) {
     this.filteredSkills = this.skillCtrl.valueChanges.pipe(
       startWith(null),
-      map((skill: string | null) => skill ? this._filterDataskill(skill) : this.dataSkills.slice()));
+      map((skill: string | null) => skill ? this._filterData(skill, 'skill') : this.dataSkills.slice()));
+
+    this.filteredRoles = this.roleCtrl.valueChanges.pipe(
+      startWith(null),
+      map((role: string | null) => role ? this._filterData(role, 'role') : this.dataRoles.slice()));
   }
 
   ngOnInit() {
@@ -82,14 +93,14 @@ export class UserProjectComponent implements OnInit {
       enterpriseName: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
       endDate: ['', []],
-      role: ['', [Validators.required]],
+      roles: ['', [Validators.required]],
       skills: ['', [Validators.required]],
     });
   }
 
   getSkillsAndRoles(): void {
     this.activatedRoute.data.subscribe(res => {
-      [this.roles, this.dataSkills] = res.data;
+      [this.dataRoles, this.dataSkills] = res.data;
     });
   }
 
@@ -108,8 +119,26 @@ export class UserProjectComponent implements OnInit {
       if (input) {
         input.value = '';
       }
-
       this.skillCtrl.setValue(null);
+    }
+  }
+
+  addRole(event: MatChipInputEvent): void {
+    if (!this.autocompletionRole.isOpen) {
+      const input = event.input;
+      const value = event.value;
+      if ((value || '').trim()) {
+        if (!this.selectedRoles.includes(value.trim())) {
+          this.selectedRoles.push(value.trim());
+        }
+        this.userProjectForm.patchValue({
+          roles: this.selectedRoles
+        });
+      }
+      if (input) {
+        input.value = '';
+      }
+      this.roleCtrl.setValue(null);
     }
   }
 
@@ -119,6 +148,15 @@ export class UserProjectComponent implements OnInit {
       skills: this.selectedSkills
     });
   }
+
+  removeRole(role: string): void {
+    this.selectedRoles = R.filter(currentRole => currentRole !== role, this.selectedRoles);
+    this.userProjectForm.patchValue({
+      roles: this.selectedRoles
+    });
+  }
+
+
 
   selectedSkillFromAoutocomplete(event: MatAutocompleteSelectedEvent): void {
     if (!this.selectedSkills.includes(event.option.viewValue)) {
@@ -131,10 +169,23 @@ export class UserProjectComponent implements OnInit {
     });
   }
 
-  private _filterDataskill(value: string): string[] {
+  selectedRoleFromAoutocomplete(event: MatAutocompleteSelectedEvent): void {
+    if (!this.selectedRoles.includes(event.option.viewValue)) {
+      this.selectedRoles.push(event.option.viewValue);
+    }
+    this.roleInput.nativeElement.value = '';
+    this.roleCtrl.setValue(null);
+    this.userProjectForm.patchValue({
+      roles: this.selectedRoles
+    });
+  }
+
+  private _filterData(value: string, type: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.dataSkills.filter(skill => value && skill.toLowerCase().indexOf(filterValue) > -1);
+    return type === 'role' ?
+      this.dataRoles.filter(skill => value && skill.toLowerCase().indexOf(filterValue) > -1) :
+      this.dataSkills.filter(skill => value && skill.toLowerCase().indexOf(filterValue) > -1);
   }
 
   saveUserProject(): void {
@@ -145,6 +196,5 @@ export class UserProjectComponent implements OnInit {
         err => console.log(err)
       );
     }
-
   }
 }

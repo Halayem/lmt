@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +16,11 @@ import { UserInformationComponent } from './user-registry/components/user-inform
 import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
 import { UserExperianceListComponent } from './user-registry/user-experiance/components/user-experiance-list/user-experiance-list.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
+// the second parameter 'fr' is optional
+registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +40,12 @@ import { UserExperianceListComponent } from './user-registry/user-experiance/com
     MaterialModule,
 
   ],
-  providers: [UserProjectService, UserProjectResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
+  providers: [
+    UserProjectService,
+    UserProjectResolverService,
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }, 
+    { provide: LOCALE_ID, useValue: 'fr' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

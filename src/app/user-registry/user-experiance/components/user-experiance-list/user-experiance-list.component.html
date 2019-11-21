@@ -7,11 +7,14 @@
                     {{project.subject}}
                 </mat-panel-title>
                 <mat-panel-description>
-                    DU {{project.startDate | date:'shortDate'}} AU {{project.endDate | date:'shortDate'}} Chez
-                    {{project.enterpriseName}}
+                    DU {{project.startDate | date:'shortDate'}} 
+                    <span *ngIf="project.endDate" class="mx-3"> AU {{project.endDate | date:'shortDate'}} </span> 
+                    <span *ngIf="!project.endDate" class="mx-3"> Jusqu'à aujourd'hui </span>
+                    Chez {{project.enterpriseName}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div [innerHTML]="project.description"></div>
-            <div>{{project.role}}</div>
+            <div>Rôles: {{project.roles.join(', ')}}</div>
+            <div>Competences: {{project.skills.join(', ')}}</div>
         </mat-expansion-panel>
     </mat-accordion>

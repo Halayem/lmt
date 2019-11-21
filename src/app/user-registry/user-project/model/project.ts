@@ -4,6 +4,6 @@ export interface Project {
     enterpriseName: string;
     startDate: Date;
     endDate: Date;
-    role: string;
+    roles: Array<string>;
     skills: Array<string>;
 }
