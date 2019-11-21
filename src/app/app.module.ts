@@ -15,6 +15,7 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
 import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
+import { UserExperianceListComponent } from './user-registry/user-experiance/components/user-experiance-list/user-experiance-list.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { UserExperianceComponent } from './user-registry/user-experiance/compone
     UserInformationComponent,
     UserProjectComponent,
     UserExperianceComponent,
+    UserExperianceListComponent,
   ],
   imports: [
     BrowserModule,

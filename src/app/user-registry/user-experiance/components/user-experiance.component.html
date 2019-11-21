@@ -1,24 +1,8 @@
 <div class="container">
-    <mat-accordion class="mb-3">
-        <mat-expansion-panel 
-            *ngFor="let project of projects" class="mb-3">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    {{project.subject}}
-                </mat-panel-title>
-                <mat-panel-description>
-                    DU {{project.startDate | date:'shortDate'}} AU {{project.endDate | date:'shortDate'}} Chez
-                    {{project.enterpriseName}}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div [innerHTML]="project.description"></div>
-            <div>{{project.role}}</div>
-        </mat-expansion-panel>
-    </mat-accordion>
+    <app-user-experiance-list [projects]="projects"></app-user-experiance-list>
+    <button class="btn btn-primary m-3" [disabled]="addproject" (click)="addProjectHandler()">AJOUTER PROJET</button>
 
-    <button class="btn btn-primary mb-3" [disabled]="addproject" (click)="addProjectHandler()">AJOUTER PROJET</button>
-
-    <app-user-project *ngIf="addproject" (saveProject)="saveProject($event)">
+    <app-user-project *ngIf="addproject"  (saveProject)="saveProject($event)">
 
     </app-user-project>
 </div>
