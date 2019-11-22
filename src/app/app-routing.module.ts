@@ -4,6 +4,7 @@ import { UserInformationComponent } from './user-registry/components/user-inform
 import { UserBasicInformationComponent } from './user-registry/user-basic-information/components/user-basic-information.component';
 import { UserExperianceResolverService } from './user-registry/user-experiance/service/user-experiance-resolver.service';
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
+import { UserAuthentificationComponent } from './user-registry/user-authentification/components/user-authentification.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,14 @@ const routes: Routes = [
   {
     path: 'user-experiences',
     component: UserExperianceComponent
+  },
+  {
+    path: 'user-authentification',
+    component: UserAuthentificationComponent
+  },
+  { path: '',
+    redirectTo: '/user-authentification',
+    pathMatch: 'full'
   }
    
   

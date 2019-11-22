@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center"><b>Sign In</b></h5>
+                        <form name="form" [formGroup]="form" class="form-signin">
+                            <div class="form-group">
+                                <label for=mailProfesional>Email</label>
+                                <input 
+                                  type="email" 
+                                  class="form-control" 
+                                  formControlName="mailProfesional" 
+                                  [ngClass]="{'is-invalid': form.get('mailProfesional').touched && form.get('mailProfesional').invalid}"  
+                                />
+                                <div class="invalid-feedback" *ngIf="form.get('mailProfesional').touched && form.get('mailProfesional').invalid">
+                                  <div *ngIf="form.get('mailProfesional').errors.required">Email est requis. </div>
+                                  <div *ngIf="form.get('mailProfesional').errors.email">Veuillez entrer une adresse valide. </div>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label for=passwordUser>Password</label>      
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    formControlName="passwordUser" 
+                                    minlength="4" 
+                                    [ngClass]="{'is-invalid': form.get('passwordUser').touched && form.get('passwordUser').invalid}" 
+                                />    
+                                <div class="invalid-feedback" *ngIf="form.get('passwordUser').touched && form.get('passwordUser').invalid"> 
+                                    <div *ngIf="form.get('passwordUser').errors.required">Password required. </div>
+                                </div>   
+                            </div>
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Remember password</label>
+                            </div>
+                            <button 
+                                class="btn btn-lg btn-primary btn-block text-uppercase"
+                                type="submit"
+                                [disabled]="!form.valid" 
+                                (click)="authentificationUser()">
+                            Sign in
+                            </button>
+                            <hr class="my-4">
+                            <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit">
+                                <i class="fab fa-google mr-2"></i> Sign in with Google
+                            </button>
+                         </form>
+                        </div>
+                    </div>
+            </div>
+    </div>
+</div>

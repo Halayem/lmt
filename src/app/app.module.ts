@@ -18,7 +18,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
 
 import { NgxMaskModule } from 'ngx-mask';
-import { UserAuthentificationComponent } from './user-registry/user-authentification/components/user-authentification/user-authentification.component';
+import { UserAuthentificationComponent } from './user-registry/user-authentification/components/user-authentification.component';
 
 
 @NgModule({
