@@ -8,12 +8,10 @@ import { Profile } from '../models/informations-collaborateur';
 })
 
 export class ProfileCollaborateur {
-
-
+  
   constructor(readonly http: HttpClient) { }
 
   public getProfileCollaborateur(): Observable<Profile[]> {
     return this.http.get<Profile[]>("./assets/data/profile.json");
   }
-
 }

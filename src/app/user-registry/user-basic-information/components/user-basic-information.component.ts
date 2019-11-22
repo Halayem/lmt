@@ -14,17 +14,14 @@ export class UserBasicInformationComponent {
 
   minDate: Date;
   maxDate: Date;
-
   profile: Array<Profile>;
-
-   form = new FormGroup({
+  form = new FormGroup({
     lastName: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
     name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
     dateArrival: new FormControl('', Validators.required),
     mailProfesional: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/[^@]+@[^\.]+\..+/)]),
     phoneNumber: new FormControl('', Validators.required),
     profile: new FormControl('', Validators.required)
-    
   });  
 
   constructor( readonly  serviceCordonnees: ProfileCollaborateur, readonly router: Router ) { 
@@ -38,8 +35,6 @@ export class UserBasicInformationComponent {
 
   ajouterCollaborateur(){
     console.log("Cordonnees Collaborateur : ",this.form.value);
-    this.router.navigate(['/user-experiences']);
-    
+    this.router.navigate(['/user-experiences']);    
    }
-
 }
