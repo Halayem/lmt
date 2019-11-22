@@ -19,8 +19,15 @@ export class UserAuthentificationComponent implements OnInit {
   }
 
   authentificationUser(){
-    console.log("Cordonnees Collaborateur : ",this.form.value);
-    this.router.navigate(['/user-basic-information']);    
+    if((this.form.get("passwordUser").value == "00000") && (this.form.get("mailProfesional").value == "a@a.a"))
+    {
+      console.log("Cordonnees Collaborateur : ",this.form.value);
+      this.router.navigate(['/user-basic-information']);   
+      
+    } else {
+      alert("E-mail ou mot de passe incorrect");
+    }
+     
    }
 
 }

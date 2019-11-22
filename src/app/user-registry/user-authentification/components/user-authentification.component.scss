@@ -10,7 +10,6 @@
   
   .card-signin {
     border: 0;
-    border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
   }
   
@@ -30,7 +29,6 @@
   
   .form-signin .btn {
     font-size: 80%;
-    border-radius: 5rem;
     letter-spacing: .1rem;
     font-weight: bold;
     padding: 1rem;
@@ -44,7 +42,7 @@
   
   .form-label-group input {
     height: auto;
-    border-radius: 2rem;
+    
   }
   
   .form-label-group>input,
@@ -63,7 +61,7 @@
     line-height: 1.5;
     color: #495057;
     border: 1px solid transparent;
-    border-radius: .25rem;
+    
     transition: all .1s ease-in-out;
   }
   
