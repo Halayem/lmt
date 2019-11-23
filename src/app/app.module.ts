@@ -8,10 +8,11 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from './material/material.module';
-import { UserExperiancenceService } from './user-registry/user-experiance/service/user-experiancence.service';
-import { UserExperianceResolverService } from './user-registry/user-experiance/service/user-experiance-resolver.service';
+import { UserProjectService } from './user-registry/user-project/service/user-project.service';
+import { UserProjectResolverService } from './user-registry/user-project/service/user-project-resolver.service';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
+import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
 import { UserBasicInformationComponent } from './user-registry/user-basic-information/components/user-basic-information.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -24,6 +25,7 @@ import { NgxMaskModule } from 'ngx-mask';
   declarations: [
     AppComponent,
     UserInformationComponent,
+    UserProjectComponent,
     UserBasicInformationComponent,
     UserExperianceComponent
   ],
@@ -39,7 +41,7 @@ import { NgxMaskModule } from 'ngx-mask';
     AngularEditorModule,
     MaterialModule,
   ],
-  providers: [UserExperiancenceService, UserExperianceResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
+  providers: [UserProjectService, UserProjectResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

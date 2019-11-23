@@ -1,5 +1,5 @@
 export interface Project {
-    entitle: string;
+    subject: string;
     description: string;
     enterpriseName: string;
     startDate: Date;

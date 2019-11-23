@@ -5,7 +5,6 @@ import { startWith, map } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { UserExperiancenceService } from '../service/user-experiancence.service';
 import { ActivatedRoute } from '@angular/router';
 import { Entreprise } from '../model/entreprise';
 import { lmtWysiwygHtmlEditorConfig } from 'src/app/config/lmtWysiwygHtmlEditorConfig';
@@ -42,8 +41,7 @@ export class UserExperianceComponent implements OnInit {
   config: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
   constructor(
     readonly fb: FormBuilder,
-    readonly actRoute: ActivatedRoute,
-    readonly userExperiancenceService: UserExperiancenceService) {
+    readonly actRoute: ActivatedRoute) {
     this.filteredSkills = this.skillCtrl.valueChanges.pipe(
       startWith(null),
       map((skill: string | null) => skill ? this._filter(skill) : this.dataSkills.slice()));
@@ -146,10 +144,6 @@ export class UserExperianceComponent implements OnInit {
   saveProject(): void {
     if (this.projectForm.valid) {
       console.log(this.projectForm.value);
-      this.userExperiancenceService.saveProject(this.projectForm.value).subscribe(
-        res => console.log(res),
-        err => console.log(err)
-      );
     }
 
   }
