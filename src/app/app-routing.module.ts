@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path:       'user-information',
     component:  UserInformationComponent,
+  },
+  {
+    path:       'user-experiance',
+    component:  UserExperianceComponent,
     resolve: {
       data: UserProjectResolverService
       }

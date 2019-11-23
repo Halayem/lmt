@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +17,12 @@ import { UserBasicInformationComponent } from './user-registry/user-basic-inform
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { UserExperianceComponent } from './user-registry/user-experiance/components/user-experiance.component';
+import { UserExperianceListComponent } from './user-registry/user-experiance/components/user-experiance-list/user-experiance-list.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
+// the second parameter 'fr' is optional
+registerLocaleData(localeFr, 'fr');
 import { NgxMaskModule } from 'ngx-mask';
 
 
@@ -26,6 +31,7 @@ import { NgxMaskModule } from 'ngx-mask';
     AppComponent,
     UserInformationComponent,
     UserProjectComponent,
+    UserExperianceListComponent,
     UserBasicInformationComponent,
     UserExperianceComponent
   ],
@@ -41,7 +47,12 @@ import { NgxMaskModule } from 'ngx-mask';
     AngularEditorModule,
     MaterialModule,
   ],
-  providers: [UserProjectService, UserProjectResolverService, { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
+  providers: [
+    UserProjectService,
+    UserProjectResolverService,
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }, 
+    { provide: LOCALE_ID, useValue: 'fr' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

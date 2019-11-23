@@ -68,18 +68,33 @@
 
         <div class="mb-3">
             <mat-form-field class="w-100">
-                <mat-label>Role</mat-label>
-                <mat-select formControlName="role">
-                    <mat-option *ngFor="let role of roles" [value]="role">
+                <mat-chip-list #chipListRole>
+                    <mat-chip 
+                        *ngFor="let role of selectedRoles" 
+                        [selectable]="true" [removable]="true"
+                        (removed)="removeRole(role)">
+                        {{role}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="Roles..." #roleInput [formControl]="roleCtrl"
+                        [matAutocomplete]="autocompletionRole" [matChipInputFor]="chipListRole"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
+                        (matChipInputTokenEnd)="addRole($event)">
+                </mat-chip-list>
+                <mat-autocomplete #autocompletionRole="matAutocomplete"
+                    (optionSelected)="selectedRoleFromAoutocomplete($event)">
+                    <mat-option 
+                        *ngFor="let role of filteredRoles | async" 
+                        [value]="role">
                         {{role}}
                     </mat-option>
-                </mat-select>
+                </mat-autocomplete>
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('role').invalid && (userProjectForm.get('role').dirty || userProjectForm.get('role').touched)"
+            <div *ngIf="userProjectForm.get('roles').invalid && (roleCtrl.dirty || roleCtrl.touched)"
                 class="alert alert-danger">
 
-                <div *ngIf="userProjectForm.get('role').errors.required">
-                    Rôle requis
+                <div *ngIf="userProjectForm.get('roles').errors.required">
+                    Rôles requis
                 </div>
             </div>
         </div>
@@ -87,25 +102,23 @@
 
         <div class="mb-3">
             <mat-form-field class="w-100">
-                <mat-chip-list #chipList>
+                <mat-chip-list #chipListSkill>
                     <mat-chip 
                         *ngFor="let skill of selectedSkills" 
-                        [selectable]="true" 
-                        [removable]="true"
+                        [selectable]="true" [removable]="true"
                         (removed)="removeSkill(skill)">
                         {{skill}}
-                    <mat-icon matChipRemove>cancel</mat-icon>
+                        <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
-                    <input placeholder="Skills..." #skillInput 
-                        [formControl]="skillCtrl"
-                        [matAutocomplete]="autocompletionSkill" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
-                        (matChipInputTokenEnd)="addSkill($event)">
+                    <input placeholder="Skills..." #skillInput [formControl]="skillCtrl"
+                        [matAutocomplete]="autocompletionSkill" [matChipInputFor]="chipListSkill"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
+                        (matChipInputTokenEnd)="add($event)">
                 </mat-chip-list>
                 <mat-autocomplete #autocompletionSkill="matAutocomplete"
                     (optionSelected)="selectedSkillFromAoutocomplete($event)">
                     <mat-option 
-                        *ngFor="let skill of filteredSkills | async" 
-                        [value]="skill">
+                        *ngFor="let skill of filteredSkills | async" [value]="skill">
                         {{skill}}
                     </mat-option>
                 </mat-autocomplete>
