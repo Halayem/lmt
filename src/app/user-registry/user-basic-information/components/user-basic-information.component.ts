@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
-import { ProfileCollaborateur } from '../services-profile/profile-collaborateur.service';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Profile } from '../models/informations-collaborateur';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,36 +8,32 @@ import { Router } from '@angular/router';
   styleUrls:   ['./user-basic-information.component.scss']
 })
 
-export class UserBasicInformationComponent {
 
-  minDate: Date;
-  maxDate: Date;
+export class UserBasicInformationComponent implements OnInit {
 
-  profile: Array<Profile>;
+  private _userBasicInformationForm: FormGroup;
 
-   form = new FormGroup({
-    lastName: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
-    name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z àâæçéèêëîïôœùûüÿÀÂÆÇnÉÈÊËÎÏÔŒÙÛÜŸ-]/)]),
-    dateArrival: new FormControl('', Validators.required),
-    mailProfesional: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/[^@]+@[^\.]+\..+/)]),
-    phoneNumber: new FormControl('', Validators.required),
-    profile: new FormControl('', Validators.required)
-    
-  });  
+  constructor( readonly router: Router ) { }
 
-  constructor( readonly  serviceCordonnees: ProfileCollaborateur, readonly router: Router ) { 
-    this.serviceCordonnees.getProfileCollaborateur().subscribe(data => {
-      console.log("Les profiles des Collaborateurs: ",data);
-      this.profile = data;
-    });
-    this.minDate = new Date(2017, 1, 1);
-    this.maxDate = new Date();
+  ngOnInit() {
+    this.buildForm();
   }
 
-  ajouterCollaborateur(){
-    console.log("Cordonnees Collaborateur : ",this.form.value);
-    this.router.navigate(['/user-experiences']);
-    
-   }
+  public storeForm() {
+    console.log( "user-basic-information: ", this.userBasicInformationForm.value );
+    // this.router.navigate(['/user-experiences']);
+  }
 
+  private buildForm(): void {
+    this._userBasicInformationForm = new FormGroup({
+      firstname:        new FormControl('', [ Validators.required, Validators.minLength( 3 ) ] ),
+      lastname:         new FormControl('', [ Validators.required, Validators.minLength( 3 ) ] ),
+      mailProfesional:  new FormControl('', [ Validators.required, Validators.email ] ),
+      phoneNumber:      new FormControl('', [ Validators.required ] )
+    });  
+  }
+
+  get userBasicInformationForm() {
+    return this._userBasicInformationForm;
+  }
 }
