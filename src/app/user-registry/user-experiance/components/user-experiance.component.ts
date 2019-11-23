@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserExperiance } from '../model/user-experiance';
 import { Project } from '../../user-project/model/project';
 
 @Component({
