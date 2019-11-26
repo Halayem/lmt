@@ -24,6 +24,7 @@ import localeFr from '@angular/common/locales/fr';
 // the second parameter 'fr' is optional
 registerLocaleData(localeFr, 'fr');
 import { NgxMaskModule } from 'ngx-mask';
+import { LmtAutocompleteComponent } from './shared/components/lmt-autocomplete/lmt-autocomplete.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { NgxMaskModule } from 'ngx-mask';
     UserProjectComponent,
     UserExperianceListComponent,
     UserBasicInformationComponent,
-    UserExperianceComponent
+    UserExperianceComponent,
+    LmtAutocompleteComponent
   ],
   imports: [
     BrowserModule,
