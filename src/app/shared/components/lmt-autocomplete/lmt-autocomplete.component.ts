@@ -34,8 +34,9 @@ export class LmtAutocompleteComponent implements OnInit {
     }
 
     this.lmtAutocompleteParam = {
-      datasource:     this.skillService.getSkills(),
-      attributeName:  'name'
+      datasource:       this.skillService.getSkills(),
+      attributeName:    'name',
+      attributeIdName:  'id'
     };
 
     console.log ( 'LmtAutocompleteComponent - ws executed ?');
@@ -45,7 +46,7 @@ export class LmtAutocompleteComponent implements OnInit {
   }
 
   public addElement( matchipInputEvent: MatChipInputEvent ): void {
-    console.log ( 'received event, input: ', matchipInputEvent.input, ' value: ', matchipInputEvent.value );
+    console.log ( 'addElement - received event, input: ', matchipInputEvent.input, ' value: ', matchipInputEvent.value );
     if ( this.matAutocomplete.isOpen ) {
       return;
     }
@@ -59,6 +60,14 @@ export class LmtAutocompleteComponent implements OnInit {
     this._itemControl.setValue( null );
 
     console.log( 'selected items', this._selectedItems );
+  }
+
+  public removeItem( itemToRemove: any ): void {
+    this._selectedItems.splice(
+      R.findIndex( 
+        R.propEq( this.lmtAutocompleteParam.attributeIdName, itemToRemove[ this.lmtAutocompleteParam.attributeIdName ] ) 
+      )( this._selectedItems )
+    ,1 ); // removes one element from index computed by R.findIndex...
   }
 
   private getFilterCallback(): Observable<Observable<any[]>> {

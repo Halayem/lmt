@@ -3,9 +3,10 @@
        
       <mat-chip *ngFor          = "let selectedItem of selectedItems"
                 [selectable]    = "true"
-                [removable]     = "true" >
+                [removable]     = "true" 
+                (removed)       = "removeItem( selectedItem )">
         {{selectedItem.name}}
-        <mat-icon matChipRemove *ngIf = "removable">cancel</mat-icon>
+        <mat-icon matChipRemove *ngIf = "true">cancel</mat-icon>
       </mat-chip>
       
       <input  placeholder="New item..."
