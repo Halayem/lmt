@@ -4,37 +4,32 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { ActivatedRoute } from '@angular/router';
-import { startWith, map } from 'rxjs/operators';
 import * as R from 'ramda';
-
 import { UserProjectService } from '../service/user-project.service';
 import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditorConfig';
-import { Project } from '../model/project';
+import { Project, Skill, Profile } from '../model/project';
+import { SkillService } from '../service/skill.service';
+import { ProfileService } from '../service/profile.service';
+import { CollectionUtils } from 'src/app/utils/collection';
 
 
 @Component({
-  selector: 'app-user-project',
-  templateUrl: './user-project.component.html',
-  styleUrls: ['./user-project.component.scss']
+  selector:     'app-user-project',
+  templateUrl:  './user-project.component.html',
+  styleUrls:    ['./user-project.component.scss']
 })
 export class UserProjectComponent implements OnInit {
 
-  private userProjectForm: FormGroup;
+  private _userProjectForm: FormGroup;
+  private _maxStartDate:    Date;
+  private _minEndDate:      Date;
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  skillCtrl = new FormControl();
-  roleCtrl = new FormControl();
-  filteredSkills: Observable<string[]>;
-  filteredRoles: Observable<string[]>;
+  
+  
   selectedSkills: string[] = [];
   selectedRoles: string[] = [];
-  dataSkills: string[];
-  dataRoles: string[];
   roles: string[];
-  minStartDate: Date;
-  maxStartDate = new Date();
-  minEndDate: Date;
-  maxEndDate = new Date();
 
   @ViewChild('skillInput', { static: false }) skillInput: ElementRef<HTMLInputElement>;
   @ViewChild('autocompletionSkill', { static: false }) matAutocomplete: MatAutocomplete;
@@ -45,64 +40,73 @@ export class UserProjectComponent implements OnInit {
   @Output() saveProject: EventEmitter<Project> = new EventEmitter<Project>();
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
-  constructor(
-    readonly formBuilder: FormBuilder,
-    readonly activatedRoute: ActivatedRoute,
-    readonly userProjectService: UserProjectService) {
-    this.filteredSkills = this.skillCtrl.valueChanges.pipe(
-      startWith(null),
-      map((skill: string | null) => skill ? this._filterData(skill, 'skill') : this.dataSkills.slice()));
+  
+  private _referentialSkills$:    Observable<Skill[]>;
+  private _filteredSkills$:       Observable<Skill[]>;
+  private _referentialProfiles$:  Observable<Profile[]>;
+  private _filteredProfile$:      Observable<Profile[]>;
+  
+  constructor(  readonly formBuilder:         FormBuilder,
+                readonly skillService:        SkillService,
+                readonly profileService:      ProfileService,
+                readonly userProjectService:  UserProjectService ) {
 
-    this.filteredRoles = this.roleCtrl.valueChanges.pipe(
-      startWith(null),
-      map((role: string | null) => role ? this._filterData(role, 'role') : this.dataRoles.slice()));
+    this._referentialSkills$    = this.skillService.getSkills();
+    this._referentialProfiles$  = this.profileService.getProfiles();
   }
 
   ngOnInit() {
-    this.createUserProjectForm();
-    this.getSkillsAndRoles();
-    this.updateMinEndDate();
-    this.updateMaxStartDate();
+    this.setupFilter              ();
+    this.createUserProjectForm    ();
+    this.setupProjectDateInterval ();
   }
 
-  updateMinEndDate() {
-    this.userProjectForm
-      .get('startDate')
-      .valueChanges.subscribe(
-        val => {
-          val ? this.minEndDate = val : this.minEndDate = null;
-        }
-      );
-  }
-
-  updateMaxStartDate() {
-    this.userProjectForm
-      .get('endDate')
-      .valueChanges.subscribe(
-        val => {
-          val ? this.maxStartDate = val : this.maxStartDate = new Date();
-        }
-      );
-  }
-
-
-  createUserProjectForm() {
-    this.userProjectForm = this.formBuilder.group({
-      subject: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      enterpriseName: ['', [Validators.required]],
-      startDate: ['', [Validators.required]],
-      endDate: ['', []],
-      roles: ['', [Validators.required]],
-      skills: ['', [Validators.required]],
+  private setupFilter(): void {
+    // TODO when subscribe, must unsubscribe 
+    this._userProjectForm.get( 'skills' ).valueChanges.subscribe( writtenSkill => {
+      this._filteredSkills$ = CollectionUtils.filter( this._referentialSkills$, 'name', writtenSkill ); 
+    });
+    
+    this._userProjectForm.get( 'profiles' ).valueChanges.subscribe( writtenProfile => {
+      this._filteredProfile$ = CollectionUtils.filter( this._referentialProfiles$, 'name', writtenProfile ); 
     });
   }
 
-  getSkillsAndRoles(): void {
-    this.activatedRoute.data.subscribe(res => {
-      [this.dataRoles, this.dataSkills] = res.data;
+  private createUserProjectForm(): void {
+    this._userProjectForm = this.formBuilder.group({
+      subject:        [ '', [ Validators.required ] ],
+      description:    [ '', [ Validators.required ] ],
+      enterpriseName: [ '', [ Validators.required ] ],
+      startDate:      [ '', [ Validators.required ] ],
+      endDate:        [ ''  ],
+      roles:          [ '', [ Validators.required ] ],
+      skills:         [ '', [ Validators.required ] ],
     });
   }
+
+
+  private setupProjectDateInterval(): void {
+    this.updateMinEndDateWhenStartDateChanged();
+    this.updateMaxStartDateWhenEndDateChanged();
+  }
+
+  private updateMinEndDateWhenStartDateChanged(): void {
+    this._userProjectForm.get( 'startDate' ).valueChanges.subscribe(
+        selectedStartDate => { 
+          this._minEndDate = selectedStartDate ? selectedStartDate : null; 
+        }
+    );
+  }
+
+  private updateMaxStartDateWhenEndDateChanged(): void {
+    this._userProjectForm.get( 'endDate' ).valueChanges.subscribe(
+        selectedEndDate => {
+          this._maxStartDate = selectedEndDate ? selectedEndDate : new Date();
+        }
+    );
+  }
+
+  
 
   addSkill(event: MatChipInputEvent): void {
     if (!this.matAutocomplete.isOpen) {
@@ -180,21 +184,20 @@ export class UserProjectComponent implements OnInit {
     });
   }
 
-  private _filterData(value: string, type: string): string[] {
-    const filterValue = value.toLowerCase();
+  
 
-    return type === 'role' ?
-      this.dataRoles.filter(skill => value && skill.toLowerCase().indexOf(filterValue) > -1) :
-      this.dataSkills.filter(skill => value && skill.toLowerCase().indexOf(filterValue) > -1);
-  }
-
-  saveUserProject(): void {
-    if (this.userProjectForm.valid) {
-      this.saveProject.emit(this.userProjectForm.value);
-      this.userProjectService.saveProject(this.userProjectForm.value).subscribe(
-        res => console.log(res),
-        err => console.log(err)
-      );
+  public saveProject0(): void {
+    if ( !this._userProjectForm.valid ) {
+      console.error( 'form user project is not valid, can not save it' );
+      return;
     }
+    //  this.saveProject.emit(this.userProjectForm.value);
+    // TODO will implement interceptor to catch request and response ....
+    this.userProjectService.saveProject( this._userProjectForm.value );
   }
+
+  /****************** G E T T E R S **********************/
+  get userProjectForm () { return this._userProjectForm;  }
+  get maxStartDate    () { return this._maxStartDate;     }
+  get minEndDate      () { return this._minEndDate;       }
 }
