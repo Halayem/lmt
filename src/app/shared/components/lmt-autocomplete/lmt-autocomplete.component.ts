@@ -45,13 +45,6 @@ export class LmtAutocompleteComponent implements OnInit {
     this.getFilterCallback().subscribe( filterCallback => this._filteredItems = filterCallback );
   }
 
-  public addElement( matchipInputEvent: MatChipInputEvent ): void {
-    console.log ( 'addElement - received event, input: ', matchipInputEvent.input, ' value: ', matchipInputEvent.value );
-    if ( this.matAutocomplete.isOpen ) {
-      return;
-    }
-  }
-
   public selectedItem( matAutocompleteSelectedEvent: MatAutocompleteSelectedEvent ): void {
     console.log ( 'selectedItem - received event, input: ', matAutocompleteSelectedEvent.option );
     
