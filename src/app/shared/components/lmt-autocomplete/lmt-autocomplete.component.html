@@ -5,7 +5,7 @@
                 [selectable]    = "true"
                 [removable]     = "true" 
                 (removed)       = "removeItem( selectedItem )">
-        {{selectedItem.name}}
+        {{ selectedItem[lmtAutocompleteParam.attributeNameToDisplay] }}
         <mat-icon matChipRemove *ngIf = "true">cancel</mat-icon>
       </mat-chip>
       
@@ -18,7 +18,7 @@
     </mat-chip-list>
     <mat-autocomplete #auto = "matAutocomplete" (optionSelected) = "selectedItem($event)" >
       <mat-option *ngFor="let filteredItem of filteredItems | async" [value]="filteredItem">
-        {{ filteredItem[lmtAutocompleteParam.attributeName] }}
+        {{ filteredItem[lmtAutocompleteParam.attributeNameToDisplay] }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

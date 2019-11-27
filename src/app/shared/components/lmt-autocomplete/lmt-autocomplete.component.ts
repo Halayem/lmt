@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { LmtAutocompleteParameter } from './model/lmt-autocomplete-param';
 import { Observable } from 'rxjs';
 import { LmtAutocompleteConfigurationModel } from './model/lmt-autocomplete-config';
@@ -7,13 +7,13 @@ import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { SkillService } from 'src/app/user-registry/user-project/service/skill.service';
 import * as R from 'ramda';
-import { MatChipInputEvent, MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
 @Component({
   selector:     'app-lmt-autocomplete',
   templateUrl:  './lmt-autocomplete.component.html',
   styleUrls:    ['./lmt-autocomplete.component.scss']
 })
-export class LmtAutocompleteComponent implements OnInit {
+export class LmtAutocompleteComponent {
 
   @ViewChild ( 'auto',      { static: false } ) matAutocomplete:  MatAutocomplete;
   @ViewChild ( 'itemInput', { static: false })  itemInput:        ElementRef<HTMLInputElement>;
@@ -34,9 +34,10 @@ export class LmtAutocompleteComponent implements OnInit {
     }
 
     this.lmtAutocompleteParam = {
-      datasource:       this.skillService.getSkills(),
-      attributeName:    'name',
-      attributeIdName:  'id'
+      datasource:             this.skillService.getSkills(),
+      attributeNameToDisplay: 'name',
+      attributeNameForFilter: 'name',
+      attributeNameKey:       'id'
     };
 
     console.log ( 'LmtAutocompleteComponent - ws executed ?');
@@ -55,10 +56,14 @@ export class LmtAutocompleteComponent implements OnInit {
     console.log( 'selected items', this._selectedItems );
   }
 
+  /**
+   * Removes a previous selected item
+   * @param itemToRemove 
+   */
   public removeItem( itemToRemove: any ): void {
     this._selectedItems.splice(
       R.findIndex( 
-        R.propEq( this.lmtAutocompleteParam.attributeIdName, itemToRemove[ this.lmtAutocompleteParam.attributeIdName ] ) 
+        R.propEq( this.lmtAutocompleteParam.attributeNameKey, itemToRemove[ this.lmtAutocompleteParam.attributeNameKey ] ) 
       )( this._selectedItems )
     ,1 ); // removes one element from index computed by R.findIndex...
   }
@@ -79,14 +84,11 @@ export class LmtAutocompleteComponent implements OnInit {
     }
     return this.lmtAutocompleteParam.datasource.pipe(
       map ( items => items.filter ( 
-        item => item[ this.lmtAutocompleteParam.attributeName ].toLowerCase()
-                                                               .indexOf( 
-                                                                  searchedItem.toLowerCase() 
-                                                                ) === 0 ) )
+        item => item[ this.lmtAutocompleteParam.attributeNameForFilter ].toLowerCase()
+                                                                        .indexOf( 
+                                                                          searchedItem.toLowerCase() 
+                                                                        ) === 0 ) )
     );
-  }
-
-  ngOnInit() {
   }
 
   get itemControl   () { return this._itemControl;    }
