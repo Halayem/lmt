@@ -6,6 +6,5 @@ export const LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION: LmtAutocompleteConfigurati
         visible:            true,
         selectable:         true,
         removable:          true,
-        addOnBlur:          true,
         seperatorKeyCodes:  [ENTER, COMMA]
     };
