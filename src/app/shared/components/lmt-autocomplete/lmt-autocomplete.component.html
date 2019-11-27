@@ -1,0 +1,25 @@
+<mat-form-field *ngIf="( componentReady | async )" style = "width: 100%">
+    <mat-chip-list #chipList aria-label="skill selection">
+       
+      <mat-chip *ngFor          = "let selectedItem of selectedItems"
+                [selectable]    = "lmtAutocompleteConfig?.selectable"
+                [removable]     = "lmtAutocompleteConfig?.removable" 
+                (removed)       = "removeItem( selectedItem )">
+        {{ selectedItem[lmtAutocompleteParam.attributeNameToDisplay] }}
+        <mat-icon matChipRemove *ngIf = "lmtAutocompleteConfig?.removable">cancel</mat-icon>
+      </mat-chip>
+      
+      <input  placeholder="New item..."
+              #itemInput
+              [formControl]                   = "itemControl"
+              [matAutocomplete]               = "auto"
+              [matChipInputFor]               = "chipList"
+              [matChipInputSeparatorKeyCodes] = "lmtAutocompleteConfig?.seperatorKeyCodes">
+    </mat-chip-list>
+    <mat-autocomplete #auto = "matAutocomplete" (optionSelected) = "selectedItem($event)" >
+      <mat-option *ngFor="let filteredItem of filteredItems | async" [value]="filteredItem">
+        {{ filteredItem[lmtAutocompleteParam.attributeNameToDisplay] }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  

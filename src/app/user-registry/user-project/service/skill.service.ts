@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Skill } from '../model/project';
 
 const BASE_URL = 'assets/data';
 
@@ -9,9 +10,9 @@ const BASE_URL = 'assets/data';
 })
 export class SkillService {
 
-  constructor(readonly http: HttpClient) { }
+  constructor( readonly http: HttpClient ) { }
 
-  getSkills(): Observable<string[]> {
-    return this.http.get<string[]>(`${BASE_URL}/skills.json`);
+  getSkills(): Observable<Skill[]> {
+    return this.http.get<Skill[]>( `${BASE_URL}/skills.json` );
   }
 }

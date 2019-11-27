@@ -9,9 +9,10 @@ const BASE_URL = 'assets/data';
   providedIn: 'root'
 })
 export class UserProjectService {
-  constructor(readonly http: HttpClient) { }
+  
+  constructor( readonly http: HttpClient ) { }
 
-  saveProject(project: Project): Observable<any> {
-    return this.http.post(`${BASE_URL}/project`, project);
+  public saveProject( project: Project ): Observable<any> {
+    return this.http.post( `${BASE_URL}/project`, project );
   }
 }

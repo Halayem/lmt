@@ -110,11 +110,13 @@
                         {{skill}}
                         <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
-                    <input placeholder="Skills..." #skillInput [formControl]="skillCtrl"
-                        [matAutocomplete]="autocompletionSkill" [matChipInputFor]="chipListSkill"
+                    <input placeholder="Skills..." 
+                            #skillInput [formControl]="skillCtrl"
+                            [matAutocomplete]="autocompletionSkill" [matChipInputFor]="chipListSkill"
                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
                         (matChipInputTokenEnd)="add($event)">
                 </mat-chip-list>
+                
                 <mat-autocomplete #autocompletionSkill="matAutocomplete"
                     (optionSelected)="selectedSkillFromAoutocomplete($event)">
                     <mat-option 
@@ -122,6 +124,7 @@
                         {{skill}}
                     </mat-option>
                 </mat-autocomplete>
+
             </mat-form-field>
             <div *ngIf="userProjectForm.get('skills').invalid && (skillCtrl.dirty || skillCtrl.touched)"
                 class="alert alert-danger">
