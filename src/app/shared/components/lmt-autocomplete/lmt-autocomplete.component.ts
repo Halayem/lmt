@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { LmtAutocompleteParameter } from './model/lmt-autocomplete-param';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { LmtAutocompleteConfigurationModel } from './model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from './config/lmt-autocomplete-configs';
 import { FormControl } from '@angular/forms';
