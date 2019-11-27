@@ -66,73 +66,13 @@
 
 
 
-        <div class="mb-3">
-            <mat-form-field class="w-100">
-                <mat-chip-list #chipListRole>
-                    <mat-chip 
-                        *ngFor="let role of selectedRoles" 
-                        [selectable]="true" [removable]="true"
-                        (removed)="removeRole(role)">
-                        {{role}}
-                        <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                    <input placeholder="Roles..." #roleInput [formControl]="roleCtrl"
-                        [matAutocomplete]="autocompletionRole" [matChipInputFor]="chipListRole"
-                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
-                        (matChipInputTokenEnd)="addRole($event)">
-                </mat-chip-list>
-                <mat-autocomplete #autocompletionRole="matAutocomplete"
-                    (optionSelected)="selectedRoleFromAoutocomplete($event)">
-                    <mat-option 
-                        *ngFor="let role of filteredRoles | async" 
-                        [value]="role">
-                        {{role}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-            <div *ngIf="userProjectForm.get('roles').invalid && (roleCtrl.dirty || roleCtrl.touched)"
-                class="alert alert-danger">
-
-                <div *ngIf="userProjectForm.get('roles').errors.required">
-                    Rôles requis
-                </div>
-            </div>
+        <div class="mb-3">            
+            <app-lmt-autocomplete [lmtAutocompleteParam]="lmtAutocompleteParamForProfile"></app-lmt-autocomplete>
         </div>
 
 
         <div class="mb-3">
-            <mat-form-field class="w-100">
-                <mat-chip-list #chipListSkill>
-                    <mat-chip 
-                        *ngFor="let skill of selectedSkills" 
-                        [selectable]="true" [removable]="true"
-                        (removed)="removeSkill(skill)">
-                        {{skill}}
-                        <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                    <input placeholder="Skills..." 
-                            #skillInput [formControl]="skillCtrl"
-                            [matAutocomplete]="autocompletionSkill" [matChipInputFor]="chipListSkill"
-                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
-                        (matChipInputTokenEnd)="add($event)">
-                </mat-chip-list>
-                
-                <mat-autocomplete #autocompletionSkill="matAutocomplete"
-                    (optionSelected)="selectedSkillFromAoutocomplete($event)">
-                    <mat-option 
-                        *ngFor="let skill of filteredSkills | async" [value]="skill">
-                        {{skill}}
-                    </mat-option>
-                </mat-autocomplete>
-
-            </mat-form-field>
-            <div *ngIf="userProjectForm.get('skills').invalid && (skillCtrl.dirty || skillCtrl.touched)"
-                class="alert alert-danger">
-
-                <div *ngIf="userProjectForm.get('skills').errors.required">
-                    Skill requis
-                </div>
-            </div>
+            <app-lmt-autocomplete [lmtAutocompleteParam]="lmtAutocompleteParamForSkill"></app-lmt-autocomplete>
         </div>
 
         <button class="btn btn-primary" type="submit" [disabled]="userProjectForm.invalid">Enregistrer</button>
