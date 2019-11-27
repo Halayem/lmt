@@ -123,7 +123,7 @@ export class UserProjectComponent implements OnInit {
       if (input) {
         input.value = '';
       }
-      this.skillCtrl.setValue(null);
+      //this.skillCtrl.setValue(null);
     }
   }
 
@@ -142,7 +142,7 @@ export class UserProjectComponent implements OnInit {
       if (input) {
         input.value = '';
       }
-      this.roleCtrl.setValue(null);
+      //this.roleCtrl.setValue(null);
     }
   }
 
@@ -167,7 +167,7 @@ export class UserProjectComponent implements OnInit {
       this.selectedSkills.push(event.option.viewValue);
     }
     this.skillInput.nativeElement.value = '';
-    this.skillCtrl.setValue(null);
+    //this.skillCtrl.setValue(null);
     this.userProjectForm.patchValue({
       skills: this.selectedSkills
     });
@@ -178,7 +178,7 @@ export class UserProjectComponent implements OnInit {
       this.selectedRoles.push(event.option.viewValue);
     }
     this.roleInput.nativeElement.value = '';
-    this.roleCtrl.setValue(null);
+    //this.roleCtrl.setValue(null);
     this.userProjectForm.patchValue({
       roles: this.selectedRoles
     });

@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from './material/material.module';
 import { UserProjectService } from './user-registry/user-project/service/user-project.service';
-import { UserProjectResolverService } from './user-registry/user-project/service/user-project-resolver.service';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { UserInformationComponent } from './user-registry/components/user-information.component';
 import { UserProjectComponent } from './user-registry/user-project/components/user-project.component';
@@ -51,7 +50,6 @@ import { LmtAutocompleteComponent } from './shared/components/lmt-autocomplete/l
   ],
   providers: [
     UserProjectService,
-    UserProjectResolverService,
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }, 
     { provide: LOCALE_ID, useValue: 'fr' }
   ],
