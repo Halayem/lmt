@@ -1,16 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { Observable, forkJoin } from 'rxjs';
-import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import * as R from 'ramda';
 import { UserProjectService } from '../service/user-project.service';
 import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditorConfig';
 import { Project, Skill, Profile } from '../model/project';
 import { SkillService } from '../service/skill.service';
 import { ProfileService } from '../service/profile.service';
-import { Role } from '../model/role';
 import { LmtAutocompleteParameter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
 @Component({
   selector:     'app-user-project',
@@ -103,7 +99,7 @@ export class UserProjectComponent implements OnInit {
 
 
 
-  public saveProject0(): void {
+  public saveUserProject(): void {
     if ( !this.userProjectForm.valid ) {
       console.error( 'form user project is not valid, can not save it' );
       return;
