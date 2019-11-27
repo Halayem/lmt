@@ -10,8 +10,6 @@ import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditor
 import { Project, Skill, Profile } from '../model/project';
 import { SkillService } from '../service/skill.service';
 import { ProfileService } from '../service/profile.service';
-import { CollectionUtils } from 'src/app/utils/collection';
-
 
 @Component({
   selector:     'app-user-project',
@@ -64,11 +62,11 @@ export class UserProjectComponent implements OnInit {
   private setupFilter(): void {
     // TODO when subscribe, must unsubscribe 
     this._userProjectForm.get( 'skills' ).valueChanges.subscribe( writtenSkill => {
-      this._filteredSkills$ = CollectionUtils.filter( this._referentialSkills$, 'name', writtenSkill ); 
+      // this._filteredSkills$ = CollectionUtils.filter( this._referentialSkills$, 'name', writtenSkill ); 
     });
     
     this._userProjectForm.get( 'profiles' ).valueChanges.subscribe( writtenProfile => {
-      this._filteredProfile$ = CollectionUtils.filter( this._referentialProfiles$, 'name', writtenProfile ); 
+      // this._filteredProfile$ = CollectionUtils.filter( this._referentialProfiles$, 'name', writtenProfile ); 
     });
   }
 
