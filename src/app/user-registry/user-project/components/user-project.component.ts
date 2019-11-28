@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { UserProjectService } from '../service/user-project.service';
@@ -17,16 +17,14 @@ export class UserProjectComponent implements OnInit {
 
   private _referentialSkills$:    Observable<Skill[]>;
   private _referentialProfiles$:  Observable<Profile[]>;
-  userProjectForm:                FormGroup;
-  minStartDate:                   Date;
-  maxStartDate:                   Date;
-  maxEndDate:                     Date;
-  minEndDate:                     Date;
+  private _userProjectForm:       FormGroup;
+  private _maxStartDate:          Date;
+  private _minEndDate:            Date;
   lmtAutocompleteParamForProfile: LmtAutocompleteParameter;
   lmtAutocompleteParamForSkill:   LmtAutocompleteParameter;
 
 
-
+  binding: FormControl;
   @Output() saveProject: EventEmitter<Project> = new EventEmitter<Project>();
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
@@ -64,7 +62,7 @@ export class UserProjectComponent implements OnInit {
   }
 
   private createUserProjectForm(): void {
-    this.userProjectForm = this.formBuilder.group({
+    this._userProjectForm = this.formBuilder.group({
       subject:        [ '', [ Validators.required ] ],
       description:    [ '', [ Validators.required ] ],
       enterpriseName: [ '', [ Validators.required ] ],
@@ -82,17 +80,17 @@ export class UserProjectComponent implements OnInit {
   }
 
   private updateMinEndDateWhenStartDateChanged(): void {
-    this.userProjectForm.get( 'startDate' ).valueChanges.subscribe(
+    this._userProjectForm.get( 'startDate' ).valueChanges.subscribe(
         selectedStartDate => {
-          this.minEndDate = selectedStartDate ? selectedStartDate : null; 
+          this._minEndDate = selectedStartDate ? selectedStartDate : null; 
         }
     );
   }
 
   private updateMaxStartDateWhenEndDateChanged(): void {
-    this.userProjectForm.get( 'endDate' ).valueChanges.subscribe(
+    this._userProjectForm.get( 'endDate' ).valueChanges.subscribe(
         selectedEndDate => {
-          this.maxStartDate = selectedEndDate ? selectedEndDate : new Date();
+          this._maxStartDate = selectedEndDate ? selectedEndDate : new Date();
         }
     );
   }
@@ -100,17 +98,18 @@ export class UserProjectComponent implements OnInit {
 
 
   public saveUserProject(): void {
-    if ( !this.userProjectForm.valid ) {
+    if ( !this._userProjectForm.valid ) {
       console.error( 'form user project is not valid, can not save it' );
       return;
     }
-    //  this.saveProject.emit(this.userProjectForm.value);
+    //  this.saveProject.emit(this._userProjectForm.value);
     // TODO will implement interceptor to catch request and response ....
-    this.userProjectService.saveProject( this.userProjectForm.value );
+    this.userProjectService.saveProject( this._userProjectForm.value );
   }
 
   /****************** G E T T E R S **********************/
-  // get userProjectForm () { console.log('here', Date.now()); return this._userProjectForm;  }
-  // get maxStartDate    () { return this._maxStartDate;     }
-  // get minEndDate      () { return this._minEndDate;       }
+  get userProjectForm () { return this._userProjectForm;  }
+  get maxStartDate    () { return this._maxStartDate;     }
+  get minEndDate      () { return this._minEndDate;       }
 }
+

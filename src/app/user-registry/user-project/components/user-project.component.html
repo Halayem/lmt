@@ -41,7 +41,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <mat-form-field class="w-100">
-                    <input matInput [min]="minStartDate" [max]="maxStartDate" [matDatepicker]="pickerStart"
+                    <input matInput  [max]="maxStartDate" [matDatepicker]="pickerStart"
                         placeholder="Du" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                     <mat-datepicker #pickerStart></mat-datepicker>
@@ -56,7 +56,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <mat-form-field class="w-100">
-                    <input matInput [min]="minEndDate" [max]="maxEndDate" [matDatepicker]="pickerEnd" placeholder="Au"
+                    <input matInput [min]="minEndDate"  [matDatepicker]="pickerEnd" placeholder="Au"
                         formControlName="endDate">
                     <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                     <mat-datepicker #pickerEnd></mat-datepicker>
@@ -67,12 +67,24 @@
 
 
         <div class="mb-3">            
-            <app-lmt-autocomplete [lmtAutocompleteParam]="lmtAutocompleteParamForProfile"></app-lmt-autocomplete>
+            <app-lmt-autocomplete formControlName="roles" [lmtAutocompleteParam]="lmtAutocompleteParamForProfile"></app-lmt-autocomplete>
+            <div *ngIf="userProjectForm.get('roles').invalid && (userProjectForm.get('roles').dirty || userProjectForm.get('roles').touched)"
+                class="alert alert-danger">
+                <div *ngIf="userProjectForm.get('roles').errors.required">
+                    Rôles requis
+                </div>
+            </div>
         </div>
 
 
         <div class="mb-3">
-            <app-lmt-autocomplete [lmtAutocompleteParam]="lmtAutocompleteParamForSkill"></app-lmt-autocomplete>
+            <app-lmt-autocomplete formControlName="skills"  [lmtAutocompleteParam]="lmtAutocompleteParamForSkill"></app-lmt-autocomplete>
+            <div *ngIf="userProjectForm.get('skills').invalid && (userProjectForm.get('skills').dirty || userProjectForm.get('skills').touched)"
+            class="alert alert-danger">
+                <div *ngIf="userProjectForm.get('skills').errors.required">
+                    Skills requis
+                </div>
+            </div>
         </div>
 
         <button class="btn btn-primary" type="submit" [disabled]="userProjectForm.invalid">Enregistrer</button>
