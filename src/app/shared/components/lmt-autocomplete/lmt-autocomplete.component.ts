@@ -7,6 +7,8 @@ import { FormControl, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/f
 import { startWith, map } from 'rxjs/operators';
 import * as R from 'ramda';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { NormalizeStringService } from '../../service/normalize-string.service';
+
 @Component({
   selector:     'app-lmt-autocomplete',
   templateUrl:  './lmt-autocomplete.component.html',
@@ -32,9 +34,9 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   private _itemControl:   FormControl;
 
   private _componentReady = new BehaviorSubject( false );
-  private _filter: Function;
+  private _filter         = () => {};
 
-  constructor( ) { 
+  constructor( readonly normalizeStringService: NormalizeStringService ) { 
     if ( R.isNil( this.lmtAutocompleteConfig ) ) {
       this.lmtAutocompleteConfig = LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION;
       console.info ( 'LmtAutocompleteComponent - setting lmt autocomplete default configuration: ', this.lmtAutocompleteConfig );
@@ -50,11 +52,14 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     });
   }
 
-  private setupFilter( researchFilter: ResearchFilter | null ): void {
+  private setupFilter( researchFilter: ResearchFilter | null ) {
+    if(R.isNil( researchFilter )){
+      return  this.defaultFilter.bind(this);
+    }
     
     switch ( researchFilter ) {
-      case ResearchFilter.NATURAL || null:  this._filter = this.defaultFilter;    break;
-      case ResearchFilter.NORMALIZED:       this._filter = this.normalizedFilter; break;
+      case ResearchFilter.NATURAL   :  return  this.defaultFilter.bind(this) ;    break;
+      case ResearchFilter.NORMALIZED:  return  this.normalizedFilter.bind(this) ; break;
       default: {
         throw new Error( 'unknown research filter to use: ' + researchFilter );
       }
@@ -102,7 +107,7 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     return  ( this._itemControl.valueChanges.pipe(
               startWith ( null ),
               map( ( searchedItem: string | null ) => 
-                      searchedItem ?  this.defaultFilter ( searchedItem ) :
+                      searchedItem ?  this.setupFilter ( this._lmtAutocompleteParam.researchFilter)( searchedItem ):
                                       this.lmtAutocompleteParam.datasource.slice()
               )
             ) );
@@ -121,8 +126,15 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   }
 
   private normalizedFilter( searchedItem: string | any ): any[] {
-    console.info ( 'TODO to implement' );
-    return null;
+    if ( typeof searchedItem !== 'string' ) {
+      return;
+    }
+    return this.lmtAutocompleteParam.datasource.filter(
+      item => this.normalizeStringService.nfd(item[ this.lmtAutocompleteParam.attributeNameForFilter ]).toLowerCase()
+                                                                        .indexOf( 
+                                                                          this.normalizeStringService.nfd(searchedItem.toLowerCase()) 
+                                                                        ) === 0 
+    );
   }
 
   public onChange: any = ( selectedItems: any[] )  => {};
@@ -147,6 +159,8 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   public registerOnTouched( fn: any ): void {
     console.warn ( 'registerOnTouched - not yet implemented !' );
   }
+
+
 
   get itemControl         () { return this._itemControl;          }
   get filteredItems       () { return this._filteredItems;        }

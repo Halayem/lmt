@@ -7,7 +7,7 @@ import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditor
 import { Project, Skill, Profile } from '../model/project';
 import { SkillService } from '../service/skill.service';
 import { ProfileService } from '../service/profile.service';
-import { LmtAutocompleteParameter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
+import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
@@ -18,9 +18,9 @@ export class UserProjectComponent implements OnInit {
   private _referentialSkills$:    Observable<Skill[]>;
   private _referentialProfiles$:  Observable<Profile[]>;
   private _userProjectForm:       FormGroup;
-  private _maxStartDate:          Date;
+  private _maxStartDate:          Date = new Date();
   private _minEndDate:            Date;
-  lmtAutocompleteParamForProfile: LmtAutocompleteParameter;
+  lmtAutocompleteParamForProfile: LmtAutocompleteParameter; 
   lmtAutocompleteParamForSkill:   LmtAutocompleteParameter;
 
 
@@ -47,6 +47,7 @@ export class UserProjectComponent implements OnInit {
         attributeNameToDisplay: 'name',
         attributeNameForFilter: 'name',
         attributeNameKey:       'id',
+        researchFilter: ResearchFilter.NORMALIZED
       };
     });
 
@@ -57,6 +58,7 @@ export class UserProjectComponent implements OnInit {
         attributeNameToDisplay: 'name',
         attributeNameForFilter: 'name',
         attributeNameKey:       'id',
+        researchFilter: ResearchFilter.NATURAL
       };
     });
   }
