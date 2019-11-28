@@ -1,9 +1,37 @@
 [
-    "Scrum Master",
-    "po",
-    "lead dev",
-    "dev senior",
-    "dev confirmé",
-    "big data senior",
-    "big data confirmé"
+    {
+        "id": 1,
+        "name": "Scrum Master"
+
+    },
+    {
+        "id": 1,
+        "name": "Scrum Master"
+
+    },
+    {
+        "id": 2,
+        "name": "Po"
+
+    },
+    {
+        "id": 3,
+        "name": "lead dev"
+
+    },
+    {
+        "id": 4,
+        "name": "dev confirmé"
+
+    },
+    {
+        "id": 5,
+        "name": "big data senior"
+
+    },
+    {
+        "id": 6,
+        "name": "big data confirmé"
+
+    }
 ]

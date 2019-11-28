@@ -1,22 +1,28 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, forwardRef } from '@angular/core';
 import { LmtAutocompleteParameter } from './model/lmt-autocomplete-param';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LmtAutocompleteConfigurationModel } from './model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from './config/lmt-autocomplete-configs';
-import { FormControl } from '@angular/forms';
+import { FormControl, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import * as R from 'ramda';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
 @Component({
   selector:     'app-lmt-autocomplete',
   templateUrl:  './lmt-autocomplete.component.html',
-  styleUrls:    ['./lmt-autocomplete.component.scss']
+  styleUrls:    ['./lmt-autocomplete.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => LmtAutocompleteComponent),
+      multi: true
+    }
+  ]
 })
-export class LmtAutocompleteComponent {
-
+export class LmtAutocompleteComponent implements ControlValueAccessor {
   @ViewChild ( 'auto',      { static: false } ) matAutocomplete:  MatAutocomplete;
   @ViewChild ( 'itemInput', { static: false })  itemInput:        ElementRef<HTMLInputElement>;
-  
+ 
   // input by setter !
   private _lmtAutocompleteParam:  LmtAutocompleteParameter;
   @Input() lmtAutocompleteConfig: LmtAutocompleteConfigurationModel;
@@ -26,8 +32,10 @@ export class LmtAutocompleteComponent {
   private _itemControl:   FormControl;
 
   private _componentReady = new BehaviorSubject( false );
+
+  public _values: any;
   
-  constructor() { 
+  constructor( ) { 
     if ( R.isNil( this.lmtAutocompleteConfig ) ) {
       this.lmtAutocompleteConfig = LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION;
       console.info ( 'LmtAutocompleteComponent - setting lmt autocomplete default configuration: ', this.lmtAutocompleteConfig );
@@ -61,6 +69,7 @@ export class LmtAutocompleteComponent {
     this._selectedItems.push  ( matAutocompleteSelectedEvent.option.value );
     this.itemInput.nativeElement.value = '';
     this._itemControl.setValue( null );
+    this.onChange( this._selectedItems )
 
     console.log( 'selected items', this._selectedItems );
   }
@@ -74,7 +83,9 @@ export class LmtAutocompleteComponent {
       R.findIndex( 
         R.propEq( this.lmtAutocompleteParam.attributeNameKey, itemToRemove[ this.lmtAutocompleteParam.attributeNameKey ] ) 
       )( this._selectedItems )
-    ,1 ); // removes one element from index computed by R.findIndex...
+    ,1 ); 
+    
+    this.onChange( this._selectedItems )// removes one element from index computed by R.findIndex...
   }
 
   private getFilterCallback(): Observable<any[]> {
@@ -97,6 +108,22 @@ export class LmtAutocompleteComponent {
                                                                           searchedItem.toLowerCase() 
                                                                         ) === 0 
     );
+  }
+
+  onChange: any = (selectedItems: any[]) => {}
+
+  onTouch: any = () => {}
+  
+
+  writeValue(values: any[]): void {
+    this._selectedItems.push(...values);
+  }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
   }
 
   get itemControl         () { return this._itemControl;          }
