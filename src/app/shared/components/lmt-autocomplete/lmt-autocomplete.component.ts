@@ -75,7 +75,7 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   }
 
   /**
-   * Removes a previous selected item
+   * Removes a previous selected item: removes one element from index computed by R.findIndex...
    * @param itemToRemove 
    */
   public removeItem( itemToRemove: any ): void {
@@ -85,7 +85,7 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
       )( this._selectedItems )
     ,1 ); 
     
-    this.onChange( this._selectedItems )// removes one element from index computed by R.findIndex...
+    this.onChange( this._selectedItems );
   }
 
   private getFilterCallback(): Observable<any[]> {
@@ -110,20 +110,27 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     );
   }
 
-  onChange: any = (selectedItems: any[]) => {}
+  public onChange: any = ( selectedItems: any[] )  => {};
 
-  onTouch: any = () => {}
+  /**
+   * @override
+   */
+  public writeValue( values: any[] ): void {
+    this._selectedItems.push( ...values );
+  }
   
-
-  writeValue(values: any[]): void {
-    this._selectedItems.push(...values);
-  }
-  registerOnChange(fn: any): void {
+  /**
+   * @override
+   */
+  public registerOnChange( fn: any[] ): void {
     this.onChange = fn;
-
   }
-  registerOnTouched(fn: any): void {
-    this.onTouch = fn;
+
+  /**
+   * @override
+   */
+  public registerOnTouched( fn: any ): void {
+    console.warn ( 'registerOnTouched - not yet implemented !' );
   }
 
   get itemControl         () { return this._itemControl;          }
