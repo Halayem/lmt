@@ -6,4 +6,10 @@ export interface LmtAutocompleteParameter {
     attributeNameToDisplay: string;             // what to display for user
     attributeNameForFilter: string;             // attribute used for filtering and autocomplete
     attributeNameKey:       string;             // attribute value that will be returned to parent, id ?
+    researchFilter?:        ResearchFilter;
+};
+
+enum ResearchFilter {
+    NATURAL,
+    NORMALIZED
 };

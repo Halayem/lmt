@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, Input, forwardRef } from '@angular/core';
-import { LmtAutocompleteParameter } from './model/lmt-autocomplete-param';
+import { LmtAutocompleteParameter, ResearchFilter } from './model/lmt-autocomplete-param';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LmtAutocompleteConfigurationModel } from './model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from './config/lmt-autocomplete-configs';
@@ -32,9 +32,8 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   private _itemControl:   FormControl;
 
   private _componentReady = new BehaviorSubject( false );
+  private _filter: Function;
 
-  public _values: any;
-  
   constructor( ) { 
     if ( R.isNil( this.lmtAutocompleteConfig ) ) {
       this.lmtAutocompleteConfig = LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION;
@@ -49,6 +48,17 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
         this._filteredItems = this.getFilterCallback();;    
       }
     });
+  }
+
+  private setupFilter( researchFilter: ResearchFilter | null ): void {
+    
+    switch ( researchFilter ) {
+      case ResearchFilter.NATURAL || null:  this._filter = this.defaultFilter;    break;
+      case ResearchFilter.NORMALIZED:       this._filter = this.normalizedFilter; break;
+      default: {
+        throw new Error( 'unknown research filter to use: ' + researchFilter );
+      }
+    }
   }
 
   @Input()
@@ -108,6 +118,11 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
                                                                           searchedItem.toLowerCase() 
                                                                         ) === 0 
     );
+  }
+
+  private normalizedFilter( searchedItem: string | any ): any[] {
+    console.info ( 'TODO to implement' );
+    return null;
   }
 
   public onChange: any = ( selectedItems: any[] )  => {};
