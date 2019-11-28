@@ -69,8 +69,7 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     this._selectedItems.push  ( matAutocompleteSelectedEvent.option.value );
     this.itemInput.nativeElement.value = '';
     this._itemControl.setValue( null );
-    this._values = this._selectedItems;
-    this.onChange(this._values )
+    this.onChange( this._selectedItems )
 
     console.log( 'selected items', this._selectedItems );
   }
@@ -86,8 +85,7 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
       )( this._selectedItems )
     ,1 ); 
     
-    this._values = this._selectedItems;
-    this.onChange(this._values )// removes one element from index computed by R.findIndex...
+    this.onChange( this._selectedItems )// removes one element from index computed by R.findIndex...
   }
 
   private getFilterCallback(): Observable<any[]> {
@@ -112,14 +110,13 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     );
   }
 
-  onChange: any = () => {}
+  onChange: any = (selectedItems: any[]) => {}
 
   onTouch: any = () => {}
   
 
-  writeValue(obj: any): void {
-    this._values = obj;
-
+  writeValue(values: any[]): void {
+    this._selectedItems.push(...values);
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
