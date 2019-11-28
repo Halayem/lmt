@@ -9,7 +9,7 @@ export interface LmtAutocompleteParameter {
     researchFilter?:        ResearchFilter;
 };
 
-enum ResearchFilter {
+export enum ResearchFilter {
     NATURAL,
     NORMALIZED
 };
