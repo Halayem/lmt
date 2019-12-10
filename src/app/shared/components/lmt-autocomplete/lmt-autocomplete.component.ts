@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, Input, forwardRef } from '@angular/core';
-import { LmtAutocompleteParameter } from './model/lmt-autocomplete-param';
+import { LmtAutocompleteParameter, ResearchFilter } from './model/lmt-autocomplete-param';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LmtAutocompleteConfigurationModel } from './model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from './config/lmt-autocomplete-configs';
@@ -7,6 +7,8 @@ import { FormControl, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/f
 import { startWith, map } from 'rxjs/operators';
 import * as R from 'ramda';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { NormalizeStringService } from '../../service/normalize-string.service';
+
 @Component({
   selector:     'app-lmt-autocomplete',
   templateUrl:  './lmt-autocomplete.component.html',
@@ -33,9 +35,7 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
 
   private _componentReady = new BehaviorSubject( false );
 
-  public _values: any;
-  
-  constructor( ) { 
+  constructor( readonly normalizeStringService: NormalizeStringService ) { 
     if ( R.isNil( this.lmtAutocompleteConfig ) ) {
       this.lmtAutocompleteConfig = LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION;
       console.info ( 'LmtAutocompleteComponent - setting lmt autocomplete default configuration: ', this.lmtAutocompleteConfig );
@@ -43,35 +43,52 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     
     this._itemControl = new FormControl();
     this._componentReady.subscribe( ready => {
-      console.log ( '*** construction ready ?', ready );
       if ( ready ) {
-        
-        this._filteredItems = this.getFilterCallback();;    
+        this._filteredItems = this.getFilterCallback();  
       }
     });
   }
 
+  private getFilterCallback(): Observable<any[]> {
+    return  ( this._itemControl.valueChanges.pipe(
+              startWith ( null ),
+              map( ( searchedItem: string | null ) => 
+                      searchedItem ?  this.setupFilter ( this._lmtAutocompleteParam.researchFilter )( searchedItem ):
+                                      this.lmtAutocompleteParam.datasource.slice()
+              )
+            ) );
+  }
+
+  private setupFilter( researchFilter: ResearchFilter | null ) {
+    if ( R.isNil( researchFilter ) ) {
+      return this.defaultFilter.bind( this );
+    }
+    
+    switch ( researchFilter ) {
+      case ResearchFilter.NATURAL   :  return  this.defaultFilter.bind    ( this );
+      case ResearchFilter.NORMALIZED:  return  this.normalizedFilter.bind ( this );
+      default: {
+        throw new Error( `unknown research filter to use: ${researchFilter}` );
+      }
+    }
+  }
+
   @Input()
-  set lmtAutocompleteParam( param: LmtAutocompleteParameter) {
-    console.info ( ' @Input() set lmtAutocompleteParam - parameter: ', param );
+  set lmtAutocompleteParam( param: LmtAutocompleteParameter ) {
     if ( R.isNil ( param ) ) {
       return;
     }
     this._lmtAutocompleteParam = param;
     this._componentReady.next ( true );
+
+    console.debug ( ' @Input() set lmtAutocompleteParam - parameter: ', param );
   }
 
-
-
   public selectedItem( matAutocompleteSelectedEvent: MatAutocompleteSelectedEvent ): void {
-    console.log ( 'selectedItem - received event, input: ', matAutocompleteSelectedEvent.option );
-    
     this._selectedItems.push  ( matAutocompleteSelectedEvent.option.value );
     this.itemInput.nativeElement.value = '';
     this._itemControl.setValue( null );
-    this.onChange( this._selectedItems )
-
-    console.log( 'selected items', this._selectedItems );
+    this.onChange( this._selectedItems );
   }
 
   /**
@@ -88,16 +105,9 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     this.onChange( this._selectedItems );
   }
 
-  private getFilterCallback(): Observable<any[]> {
-    return  ( this._itemControl.valueChanges.pipe(
-              startWith ( null ),
-              map( ( searchedItem: string | null ) => 
-                      searchedItem ?  this.defaultFilter ( searchedItem ) :
-                                      this.lmtAutocompleteParam.datasource.slice()
-              )
-            ) );
-  }
-
+  // *********************************************************
+  // ******* F I L T E R S  I M P L E M E N T A T I O N ******
+  // *********************************************************
   private defaultFilter( searchedItem: string | any ): any[] {
     if ( typeof searchedItem !== 'string' ) {
       return;
@@ -110,6 +120,22 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
     );
   }
 
+  private normalizedFilter( searchedItem: string | any ): any[] {
+    if ( typeof searchedItem !== 'string' ) {
+      return;
+    }
+    return this.lmtAutocompleteParam.datasource.filter(
+      item => this.normalizeStringService.nfd(item[ this.lmtAutocompleteParam.attributeNameForFilter ]).toLowerCase()
+                                                                        .indexOf( 
+                                                                          this.normalizeStringService.nfd( searchedItem.toLowerCase() ) 
+                                                                        ) === 0 
+    );
+  }
+
+  // *********************************************************
+  // *** ControlValueAccessor  I M P L E M E N T A T I O N ***
+  // *********************************************************
+
   public onChange: any = ( selectedItems: any[] )  => {};
 
   /**
@@ -121,6 +147,9 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   
   /**
    * @override
+   * Register a function provided by Angular,
+   * this function will be called by this component when a value changes
+   * 
    */
   public registerOnChange( fn: any[] ): void {
     this.onChange = fn;
@@ -132,6 +161,8 @@ export class LmtAutocompleteComponent implements ControlValueAccessor {
   public registerOnTouched( fn: any ): void {
     console.warn ( 'registerOnTouched - not yet implemented !' );
   }
+
+
 
   get itemControl         () { return this._itemControl;          }
   get filteredItems       () { return this._filteredItems;        }
