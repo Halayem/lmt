@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LmtAutocompleteComponent } from './lmt-autocomplete.component';
+import { MaterialModule } from 'src/app/material/material.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 describe('LmtAutocompleteComponent', () => {
   let component: LmtAutocompleteComponent;
@@ -8,6 +10,11 @@ describe('LmtAutocompleteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [        
+        MaterialModule,
+        ReactiveFormsModule,
+        FormsModule
+      ],
       declarations: [ LmtAutocompleteComponent ]
     })
     .compileComponents();

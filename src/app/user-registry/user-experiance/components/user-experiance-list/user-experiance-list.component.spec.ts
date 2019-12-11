@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserExperianceListComponent } from './user-experiance-list.component';
+import { MaterialModule } from 'src/app/material/material.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 describe('UserExperianceListComponent', () => {
   let component: UserExperianceListComponent;
@@ -8,6 +10,11 @@ describe('UserExperianceListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [        
+        MaterialModule,
+        ReactiveFormsModule,
+        FormsModule
+      ],
       declarations: [ UserExperianceListComponent ]
     })
     .compileComponents();
