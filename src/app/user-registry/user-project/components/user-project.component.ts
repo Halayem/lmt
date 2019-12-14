@@ -8,6 +8,8 @@ import { Project, Skill, Profile } from '../model/project';
 import { SkillService } from '../service/skill.service';
 import { ProfileService } from '../service/profile.service';
 import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
+import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt-autocomplete/model/lmt-autocomplete-config';
+import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
@@ -23,8 +25,9 @@ export class UserProjectComponent implements OnInit {
   lmtAutocompleteParamForProfile: LmtAutocompleteParameter; 
   lmtAutocompleteParamForSkill:   LmtAutocompleteParameter;
 
+  private _lmtAutocompleteConfigForSkill:   LmtAutocompleteConfigurationModel;
+  private _lmtAutocompleteConfigForProfile: LmtAutocompleteConfigurationModel;
 
-  binding: FormControl;
   @Output() saveProject: EventEmitter<Project> = new EventEmitter<Project>();
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
@@ -36,6 +39,9 @@ export class UserProjectComponent implements OnInit {
 
     this._referentialSkills$    = this.skillService.getSkills();
     this._referentialProfiles$  = this.profileService.getProfiles();
+
+    this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'skill'    };
+    this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'profile'  };
   }
 
   ngOnInit() {
@@ -52,25 +58,24 @@ export class UserProjectComponent implements OnInit {
     });
 
     this._referentialSkills$.subscribe(skills => {
-      console.log ( 'parent: skills: ', skills );
       this.lmtAutocompleteParamForSkill = {
         datasource:             skills,
         attributeNameToDisplay: 'name',
         attributeNameForFilter: 'name',
         attributeNameKey:       'id',
-        researchFilter: ResearchFilter.NATURAL
+        researchFilter: ResearchFilter.NORMALIZED
       };
     });
   }
 
   private createUserProjectForm(): void {
     this._userProjectForm = this.formBuilder.group({
-      subject:        [ '', [ Validators.required ] ],
+      entitle:        [ '', [ Validators.required ] ],
       description:    [ '', [ Validators.required ] ],
       enterpriseName: [ '', [ Validators.required ] ],
       startDate:      [ '', [ Validators.required ] ],
       endDate:        [ ''  ],
-      roles:          [ '', [ Validators.required ] ],
+      profiles:       [ '', [ Validators.required ] ],
       skills:         [ '', [ Validators.required ] ],
     });
   }
@@ -106,12 +111,15 @@ export class UserProjectComponent implements OnInit {
     }
     //  this.saveProject.emit(this._userProjectForm.value);
     // TODO will implement interceptor to catch request and response ....
-    this.userProjectService.saveProject( this._userProjectForm.value );
+    // this.userProjectService.saveProject( this._userProjectForm.value );
+    console.log ( 'project form data ', this._userProjectForm.value );
   }
 
   /****************** G E T T E R S **********************/
-  get userProjectForm () { return this._userProjectForm;  }
-  get maxStartDate    () { return this._maxStartDate;     }
-  get minEndDate      () { return this._minEndDate;       }
+  get userProjectForm                 () { return this._userProjectForm;                  }
+  get maxStartDate                    () { return this._maxStartDate;                     }
+  get minEndDate                      () { return this._minEndDate;                       }
+  get lmtAutocompleteConfigForSkill   () { return this._lmtAutocompleteConfigForSkill;    }
+  get lmtAutocompleteConfigForProfile () { return this._lmtAutocompleteConfigForProfile;  }
 }
 

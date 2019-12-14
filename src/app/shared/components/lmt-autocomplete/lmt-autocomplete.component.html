@@ -9,7 +9,7 @@
         <mat-icon matChipRemove *ngIf = "lmtAutocompleteConfig?.removable">cancel</mat-icon>
       </mat-chip>
       
-      <input  placeholder="New item..."
+      <input  placeholder="{{ lmtAutocompleteConfig?.placeholder }}"
               #itemInput
               [formControl]                   = "itemControl"
               [matAutocomplete]               = "auto"

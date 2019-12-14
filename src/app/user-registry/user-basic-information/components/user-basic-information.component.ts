@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EmployeeService } from '../service/employee';
 
 @Component({
   selector:    'app-user-basic-information',
@@ -13,23 +14,24 @@ export class UserBasicInformationComponent implements OnInit {
 
   private _userBasicInformationForm: FormGroup;
 
-  constructor( readonly router: Router ) { }
+  constructor( readonly router:           Router,
+               readonly employeeService:  EmployeeService ) { }
 
   ngOnInit() {
     this.buildForm();
   }
 
-  public storeForm() {
-    console.log( "user-basic-information: ", this.userBasicInformationForm.value );
-    // this.router.navigate(['/user-experiences']);
+  public saveUserBasicInformationForm() {
+    this.employeeService.postEmployeePersonalInformation( this.userBasicInformationForm.value )
+                        .subscribe                      ( response => console.log ( 'server response: ', response ) );
   }
 
   private buildForm(): void {
     this._userBasicInformationForm = new FormGroup({
-      firstname:        new FormControl('', [ Validators.required, Validators.minLength( 3 ) ] ),
-      lastname:         new FormControl('', [ Validators.required, Validators.minLength( 3 ) ] ),
-      mailProfesional:  new FormControl('', [ Validators.required, Validators.email ] ),
-      phoneNumber:      new FormControl('', [ Validators.required ] )
+      firstname:    new FormControl('', [ Validators.required, Validators.minLength( 3 ) ] ),
+      lastname:     new FormControl('', [ Validators.required, Validators.minLength( 3 ) ] ),
+      mail:         new FormControl('', [ Validators.required, Validators.email ] ),
+      phonenumber:  new FormControl('', [ Validators.required ] )
     });  
   }
 

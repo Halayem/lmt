@@ -1,12 +1,19 @@
+
 export interface Project {
-    subject:        string;
+    id:             number;
+    entitle:        string;
     description:    string;
-    enterpriseName: string;
+    enterprise:     Enterprise;
     startDate:      Date;
     endDate:        Date;
-    roles:          Profile[];
-    skills:         Skill[];
+    profileIds:     number[];
+    skillIds:       number[];
 };
+
+export interface Enterprise {
+    id:     number;
+    name:   string;
+}
 
 export interface Profile {
     id:     number;
