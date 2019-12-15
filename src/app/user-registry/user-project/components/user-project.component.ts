@@ -10,6 +10,7 @@ import { ProfileService } from '../service/profile.service';
 import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
 import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt-autocomplete/model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
+import { UserProjectMapper } from '../mapper/user-project';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
@@ -35,7 +36,8 @@ export class UserProjectComponent implements OnInit {
   constructor(  readonly formBuilder:         FormBuilder,
                 readonly skillService:        SkillService,
                 readonly profileService:      ProfileService,
-                readonly userProjectService:  UserProjectService ) {
+                readonly userProjectService:  UserProjectService,
+                readonly userProjectMapper:   UserProjectMapper ) {
 
     this._referentialSkills$    = this.skillService.getSkills();
     this._referentialProfiles$  = this.profileService.getProfiles();
@@ -102,8 +104,6 @@ export class UserProjectComponent implements OnInit {
     );
   }
 
-
-
   public saveUserProject(): void {
     if ( !this._userProjectForm.valid ) {
       console.error( 'form user project is not valid, can not save it' );
@@ -112,7 +112,8 @@ export class UserProjectComponent implements OnInit {
     //  this.saveProject.emit(this._userProjectForm.value);
     // TODO will implement interceptor to catch request and response ....
     // this.userProjectService.saveProject( this._userProjectForm.value );
-    console.log ( 'project form data ', this._userProjectForm.value );
+    console.log ( 'project form data ', this._userProjectForm.value,
+                  'mapped data:',       this.userProjectMapper.mapFromFormToModel( this._userProjectForm.value ) );
   }
 
   /****************** G E T T E R S **********************/

@@ -13,7 +13,7 @@ export interface Project {
 export interface Enterprise {
     id:     number;
     name:   string;
-}
+};
 
 export interface Profile {
     id:     number;
