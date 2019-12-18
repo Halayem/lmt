@@ -43,22 +43,20 @@ describe('LmtAutocompleteComponent', () => {
 
   
   it('the component is ready', done => {
-    let comp = new LmtAutocompleteComponent();
-    comp.lmtAutocompleteParam =  {
+    component.lmtAutocompleteParam =  {
       datasource:             [],
       attributeNameToDisplay: 'name',
       attributeNameForFilter: 'name',
       attributeNameKey:       'id',
     };
-    comp.componentReady.subscribe(ready => {
+    component.componentReady.subscribe(ready => {
       expect(ready).toBe(true);
       done();
     })
   });
 
   it('verify length of selecteItems', () => {
-    let comp = new LmtAutocompleteComponent();
-    comp.lmtAutocompleteParam =  {
+    component.lmtAutocompleteParam =  {
       datasource:             [ {
         "id": 5,
         "name": "big data senior"
@@ -74,21 +72,16 @@ describe('LmtAutocompleteComponent', () => {
       attributeNameForFilter: 'name',
       attributeNameKey:       'id',
     };
-    comp.componentReady.next(true);
+    component.componentReady.next(true);
+    const inputElement = fixture.debugElement.query(By.css('input')); // Returns DebugElement
+    console.log('inputElement',inputElement.nativeElement);
+    inputElement.nativeElement.dispatchEvent(new Event('focusin'));
+    inputElement.nativeElement.value = '';
+    inputElement.nativeElement.dispatchEvent(new Event('input'));
     fixture.detectChanges();
-    const trigger = fixture.debugElement.query(By.css('.test'))
-  
-    
-    console.log('trigger', trigger);
-    console.log('trigger2', fixture.debugElement.query(By.css('.test')));
-    trigger.nativeElement.click();
-
-    expect(comp.selectedItems.length).toEqual(3)
-    comp.selectedItem;
-    expect(comp.selectedItems.length).toEqual(2)
-    comp.removeItem;
-    expect(comp.selectedItems.length).toEqual(1)
-
+    const matOptions = document.querySelectorAll('mat-option');
+    console.log('matOptions', matOptions)// liste vide
+    expect(matOptions.length).toEqual(2);
   });
 
 });
