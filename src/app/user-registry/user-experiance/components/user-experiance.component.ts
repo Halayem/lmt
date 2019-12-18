@@ -1,27 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Project } from '../../user-project/model/project';
+import { UserProjectService } from '../../user-project/service/user-project.service';
 
 @Component({
-  selector: 'app-user-experiance',
-  templateUrl: './user-experiance.component.html',
-  styleUrls: ['./user-experiance.component.scss']
+  selector:     'app-user-experiance',
+  templateUrl:  './user-experiance.component.html',
+  styleUrls:   ['./user-experiance.component.scss']
 })
-export class UserExperianceComponent implements OnInit {
+export class UserExperianceComponent {
 
-  addproject = false;
-  projects: Project[] = [];
-  constructor() { }
-
-  ngOnInit() {
+  private _projects: Project[];
+  private _projectEditionMode: boolean;
+  constructor( readonly userProjectService: UserProjectService ) { 
+    this._projectEditionMode = false;
   }
 
-  addProjectHandler() {
-    this.addproject = !this.addproject;
+  /**
+   * Event sent by a child and intercepted: a new project was added
+   * Refresh the employee projects
+   */
+  public onNewProjectAdded(): void {
+    console.warn( 'employee id is hard coded' );
+    this.userProjectService.getPtojectsByEmployeeId( 1 ).subscribe( data => this._projects = data );
+    // user should click on add project button to enable edition mode
+    this._projectEditionMode = false;
+  }
+  
+  public addProjectHandler(): void {
+    this._projectEditionMode = true;
   }
 
-  saveProject(event: Project) {
-    this.projects = [...this.projects, event];
-    this.addproject = !this.addproject;
-  }
+  get projects()            { return this._projects;            }
+  get projectEditionMode()  { return this._projectEditionMode;  }
 
 }

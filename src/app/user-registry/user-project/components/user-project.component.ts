@@ -29,7 +29,7 @@ export class UserProjectComponent implements OnInit {
   private _lmtAutocompleteConfigForSkill:   LmtAutocompleteConfigurationModel;
   private _lmtAutocompleteConfigForProfile: LmtAutocompleteConfigurationModel;
 
-  @Output() saveProject: EventEmitter<Project> = new EventEmitter<Project>();
+  @Output() newProjectAdded: EventEmitter<any> = new EventEmitter();
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
 
@@ -111,9 +111,13 @@ export class UserProjectComponent implements OnInit {
     }
     //  this.saveProject.emit(this._userProjectForm.value);
     // TODO will implement interceptor to catch request and response ....
-    // this.userProjectService.saveProject( this._userProjectForm.value );
-    console.log ( 'project form data ', this._userProjectForm.value,
-                  'mapped data:',       this.userProjectMapper.mapFromFormToModel( this._userProjectForm.value ) );
+    console.warn( 'employee id is hard coded' );
+    this.userProjectService.saveProject ( 1, this.userProjectMapper.mapFromFormToModel( this._userProjectForm.value ) )
+                           .subscribe   ( data => { 
+                                          this.newProjectAdded.emit( null );  
+                                          console.log ( 'project saved: ', data ); 
+                                          } );
+    
   }
 
   /****************** G E T T E R S **********************/

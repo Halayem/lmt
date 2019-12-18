@@ -11,7 +11,11 @@ export class UserProjectService {
   
   constructor( readonly http: HttpClient ) { }
 
-  public saveProject( project: Project ): Observable<any> {
-    return this.http.post( `${environment.baseUrl}/projects`, project );
+  public saveProject( employeeId: number, project: Project ): Observable<any> {
+    return this.http.post( `${environment.baseUrl}/employees/${employeeId}/projects`, project );
+  }
+
+  public getPtojectsByEmployeeId( employeeId: number): Observable<Project[]> {
+    return this.http.get<Project[]>( `${environment.baseUrl}/employees/${employeeId}/projects` );
   }
 }

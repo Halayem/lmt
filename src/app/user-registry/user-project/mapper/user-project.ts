@@ -1,6 +1,5 @@
 import { Project, Skill } from '../model/project';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +9,7 @@ export class UserProjectMapper {
     constructor() {}
 
     public mapFromFormToModel( projectForm: any ): Project {
+        console.warn( 'enterprise id is hard coded' );
         return <Project> {
             'entitle':      projectForm.entitle,
             'description':  projectForm.description,
