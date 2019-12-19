@@ -3,13 +3,13 @@
     <form [formGroup]="userProjectForm" (ngSubmit)="saveUserProject()">
         <div class="mb-3">
             <mat-form-field class="w-100">
-                <input type="text" placeholder="Intitulé du projet" matInput formControlName="subject">
+                <input type="text" placeholder="Intitulé du projet" matInput formControlName="entitle">
 
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('subject').invalid && (userProjectForm.get('subject').dirty || userProjectForm.get('subject').touched)"
+            <div *ngIf="userProjectForm.get('entitle').invalid && (userProjectForm.get('entitle').dirty || userProjectForm.get('entitle').touched)"
                 class="alert alert-danger">
 
-                <div *ngIf="userProjectForm.get('subject').errors.required">
+                <div *ngIf="userProjectForm.get('entitle').errors.required">
                     Intitulé du projet requis
                 </div>
             </div>
@@ -67,10 +67,13 @@
 
 
         <div class="mb-3">            
-            <app-lmt-autocomplete formControlName="roles" [lmtAutocompleteParam]="lmtAutocompleteParamForProfile"></app-lmt-autocomplete>
-            <div *ngIf="userProjectForm.get('roles').invalid && (userProjectForm.get('roles').dirty || userProjectForm.get('roles').touched)"
+            <app-lmt-autocomplete   formControlName="profiles" 
+                                    [lmtAutocompleteParam]  = "lmtAutocompleteParamForProfile"
+                                    [lmtAutocompleteConfig] = "lmtAutocompleteConfigForProfile">
+            </app-lmt-autocomplete>
+            <div *ngIf="userProjectForm.get('profiles').invalid && (userProjectForm.get('profiles').dirty || userProjectForm.get('profiles').touched)"
                 class="alert alert-danger">
-                <div *ngIf="userProjectForm.get('roles').errors.required">
+                <div *ngIf="userProjectForm.get('profiles').errors.required">
                     Rôles requis
                 </div>
             </div>
@@ -78,7 +81,10 @@
 
 
         <div class="mb-3">
-            <app-lmt-autocomplete formControlName="skills"  [lmtAutocompleteParam]="lmtAutocompleteParamForSkill"></app-lmt-autocomplete>
+            <app-lmt-autocomplete   formControlName="skills"  
+                                    [lmtAutocompleteParam]  = "lmtAutocompleteParamForSkill"
+                                    [lmtAutocompleteConfig] = "lmtAutocompleteConfigForSkill">
+            </app-lmt-autocomplete>
             <div *ngIf="userProjectForm.get('skills').invalid && (userProjectForm.get('skills').dirty || userProjectForm.get('skills').touched)"
             class="alert alert-danger">
                 <div *ngIf="userProjectForm.get('skills').errors.required">

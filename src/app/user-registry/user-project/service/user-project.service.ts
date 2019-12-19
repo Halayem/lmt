@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Project } from '../model/project';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-
-const BASE_URL = 'assets/data';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +11,11 @@ export class UserProjectService {
   
   constructor( readonly http: HttpClient ) { }
 
-  public saveProject( project: Project ): Observable<any> {
-    return this.http.post( `${BASE_URL}/project`, project );
+  public saveProject( employeeId: number, project: Project ): Observable<any> {
+    return this.http.post( `${environment.baseUrl}/employees/${employeeId}/projects`, project );
+  }
+
+  public getPtojectsByEmployeeId( employeeId: number): Observable<Project[]> {
+    return this.http.get<Project[]>( `${environment.baseUrl}/employees/${employeeId}/projects` );
   }
 }

@@ -1,8 +1,10 @@
 <div class="container">
     <app-user-experiance-list [projects]="projects"></app-user-experiance-list>
-    <button class="btn btn-primary m-3" [disabled]="addproject" (click)="addProjectHandler()">AJOUTER PROJET</button>
+    <button class="btn btn-primary m-3" [disabled] = "projectEditionMode" 
+                                        (click)    = "addProjectHandler()">AJOUTER PROJET</button>
 
-    <app-user-project *ngIf="addproject"  (saveProject)="saveProject($event)">
+    <app-user-project   *ngIf             = "projectEditionMode"  
+                        (newProjectAdded) = "onNewProjectAdded()">
 
     </app-user-project>
 </div>

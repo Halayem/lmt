@@ -6,5 +6,6 @@ export const LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION: LmtAutocompleteConfigurati
         visible:            true,
         selectable:         true,
         removable:          true,
-        seperatorKeyCodes:  [ENTER, COMMA]
+        seperatorKeyCodes:  [ENTER, COMMA],
+        placeholder:        'nouvel élément...'
     };
