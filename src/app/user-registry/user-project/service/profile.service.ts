@@ -4,9 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Profile } from '../model/project';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ProfileService {
 
   constructor( readonly http: HttpClient ) { }

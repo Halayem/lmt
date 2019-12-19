@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { Skill } from '../model/project';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SkillService {
 
   constructor( readonly http: HttpClient ) { }

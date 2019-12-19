@@ -1,9 +1,7 @@
 import { Project, Skill } from '../model/project';
 import { Injectable } from '@angular/core';
 
-@Injectable({
-    providedIn: 'root'
-  })
+@Injectable()
 export class UserProjectMapper {
 
     constructor() {}
