@@ -5,9 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Employee } from '../models/employee';
 import { ResourceInformation } from 'src/app/shared/model/response';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class EmployeeService {
 
   constructor( readonly http: HttpClient ) { }

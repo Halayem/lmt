@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as R from 'ramda';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 
 export class NormalizeStringService {
 
