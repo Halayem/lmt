@@ -7,7 +7,7 @@ import { UserRegistryModule } from './user-registry/user-registry.module';
 import { routing } from './app-routing.module';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpLoaderFactory, translateInitializerFn } from './ap.init';
+import { HttpLoaderFactory, translateInitializerFn } from './app.init';
 import { BrowserModule } from '@angular/platform-browser';
 
 // the second parameter 'fr' is optional
