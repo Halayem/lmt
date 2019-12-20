@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../service/employee';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector:    'app-user-basic-information',
@@ -16,8 +15,7 @@ export class UserBasicInformationComponent implements OnInit {
   private _userBasicInformationForm: FormGroup;
 
   constructor( readonly router:           Router,
-               readonly employeeService:  EmployeeService,
-               readonly translateService: TranslateService) {}
+               readonly employeeService:  EmployeeService) {}
 
   ngOnInit() {
     this.buildForm();
@@ -40,8 +38,5 @@ export class UserBasicInformationComponent implements OnInit {
   get userBasicInformationForm() {
     return this._userBasicInformationForm;
   }
-
-  get translate() {
-    return this.translateService;
-  }
+  
 }
