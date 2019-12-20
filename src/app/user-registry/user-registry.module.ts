@@ -21,6 +21,7 @@ import { UserProjectMapper } from './user-project/mapper/user-project';
 import { MaterialModule } from '../material/material.module';
 import { routing } from './user-registry.routes';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { RouterModule } from '@angular/router';
     ],
     imports: [
         BrowserModule,
+        TranslateModule,
         ReactiveFormsModule,
         NgxMaskModule.forRoot(),
         HttpClientModule,
