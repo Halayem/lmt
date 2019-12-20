@@ -1,7 +1,9 @@
 <div class="container">
     <app-user-experiance-list [projects]="projects"></app-user-experiance-list>
     <button class="btn btn-primary m-3" [disabled] = "projectEditionMode" 
-                                        (click)    = "addProjectHandler()">AJOUTER PROJET</button>
+                                        (click)    = "addProjectHandler()">
+        {{ 'ADD' | translate }} {{ 'PROJECT' | translate }}
+    </button>
 
     <app-user-project   *ngIf             = "projectEditionMode"  
                         (newProjectAdded) = "onNewProjectAdded()">

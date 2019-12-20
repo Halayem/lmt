@@ -1,5 +1,4 @@
 {
-    "PING": "pong",
     "LASTNAME":     "nom",
     "FIRSTNAME":    "prénom",
     "CONTACT":      "coordonnée",
@@ -13,6 +12,8 @@
 
     "ROLE":     "rôle",
     "SKILL":    "compétence",
+    "ROLES":     "rôles",
+    "SKILLS":    "compétences",
 
     "SINCE":    "depuis",
     "TO":       "au",
@@ -20,7 +21,9 @@
     "AT":       "chez",
 
     "SAVE": "enregistrer",
+    "ADD":  "ajouter",
 
+    "YOU":          "vous",
     "YOURS":        "vos",
     "IS_REQUIRED":  "est requis",
     "IS_INVAID":    "est invalid",

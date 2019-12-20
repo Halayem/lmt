@@ -1,54 +1,54 @@
 <div class="container">
   <div class="row">
     <div class="col-10">
-      <h2>{{ 'PING' | translate }}</h2>
+      <h2>{{ 'YOU' | translate }}</h2>
       <form name="userBasicInformationForm" [formGroup]="userBasicInformationForm">
         
         <!-- lastname -->
         <div class="form-group">
-          <label for=lastname>Nom</label>
+          <label for=lastname>{{ 'LASTNAME' | translate }}</label>
           <input  type="text"  class="form-control" formControlName="lastname" 
                   [ngClass]="{ 'is-invalid': userBasicInformationForm.get('lastname').touched && userBasicInformationForm.get('lastname').invalid }" />
           <div class="invalid-feedback">
-            <div>Nom est requis. </div>
+            <div>{{ 'LASTNAME' | translate }} {{ 'IS_REQUIRED' | translate }}</div>
           </div>
         </div>
 
         <!-- firstname -->
         <div class="form-group">
-          <label for=firstname>Prénom</label>
+          <label for=firstname>{{ 'FIRSTNAME' | translate }}</label>
           <input  type="text"  class="form-control" formControlName="firstname" 
                   [ngClass]="{ 'is-invalid': userBasicInformationForm.get('firstname').touched && userBasicInformationForm.get('firstname').invalid }" />
           <div class="invalid-feedback">
-            <div>Prénom est requis. </div>
+            <div>{{ 'FIRSTNAME' | translate }} {{ 'IS_REQUIRED' | translate }}</div>
           </div>
         </div>
 
         <!-- email -->
         <div class="form-group">
-          <label for=mail>Email</label>
+          <label for=mail>{{ 'EMAIL' | translate }}</label>
           <input  type="email" class="form-control" formControlName="mail" 
                   [ngClass]="{ 'is-invalid': userBasicInformationForm.get('mail').touched && userBasicInformationForm.get('mail').invalid}" />
           <div class="invalid-feedback" *ngIf="userBasicInformationForm.get('mail').touched && userBasicInformationForm.get('mail').invalid">
-            <div *ngIf="userBasicInformationForm.get('mail').errors.required">Email est requis. </div>
-            <div *ngIf="userBasicInformationForm.get('mail').errors.email">Veuillez entrer une adresse valide. </div>
+            <div *ngIf="userBasicInformationForm.get('mail').errors.required">{{ 'EMAIL' | translate }} {{ 'IS_REQUIRED' | translate }}</div>
+            <div *ngIf="userBasicInformationForm.get('mail').errors.email">{{ 'EMAIL' | translate }} {{ 'IS_INVAID' | translate }}</div>
           </div>
         </div> 
 
         <!-- phone number -->
         <div class="form-group">
-          <label for=phonenumber>N° Téléphone</label>
+          <label for=phonenumber>{{ 'PHONE' | translate }}</label>
           <input  type='text' mask='(000) 000-0000' class="form-control" formControlName="phonenumber" 
                   [ngClass]="{ 'is-invalid': userBasicInformationForm.get('phonenumber').touched && userBasicInformationForm.get('phonenumber').invalid }" />
           <div class="invalid-feedback" *ngIf="userBasicInformationForm.get('phonenumber').touched && userBasicInformationForm.get('phonenumber').invalid">
-            <div *ngIf="userBasicInformationForm.get('phonenumber').errors.required">N° de téléphone est requis. </div>
-            <div *ngIf="userBasicInformationForm.get('phonenumber').errors.tel ">Veuillez entrer un numéro valide. </div>
+            <div *ngIf="userBasicInformationForm.get('phonenumber').errors.required">{{ 'PHONE' | translate }} {{ 'IS_REQUIRED' | translate }}</div>
+            <div *ngIf="userBasicInformationForm.get('phonenumber').errors.tel ">{{ 'PHONE' | translate }} {{ 'IS_INVAID' | translate }}</div>
           </div>
         </div> 
         
         <div class="form-group" id="alignement">         
           <button class="btn btn-primary" [disabled]="!userBasicInformationForm.valid" (click)="saveUserBasicInformationForm()" >
-            Enregistrer
+            {{ 'SAVE' | translate }}
           </button>
         </div>
       </form>
