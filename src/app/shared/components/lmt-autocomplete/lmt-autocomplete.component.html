@@ -9,12 +9,12 @@
         <mat-icon matChipRemove *ngIf = "lmtAutocompleteConfig?.removable">cancel</mat-icon>
       </mat-chip>
       
-      <input  placeholder="{{ lmtAutocompleteConfig?.placeholder }}"
-              #itemInput
+      <input  placeholder                     = "{{ lmtAutocompleteConfig?.placeholder | translate }}"
               [formControl]                   = "itemControl"
               [matAutocomplete]               = "auto"
               [matChipInputFor]               = "chipList"
-              [matChipInputSeparatorKeyCodes] = "lmtAutocompleteConfig?.seperatorKeyCodes">
+              [matChipInputSeparatorKeyCodes] = "lmtAutocompleteConfig?.seperatorKeyCodes"
+              #itemInput>
     </mat-chip-list>
     <mat-autocomplete #auto = "matAutocomplete" (optionSelected) = "selectedItem($event)" >
       <mat-option *ngFor="let filteredItem of filteredItems | async" [value]="filteredItem">

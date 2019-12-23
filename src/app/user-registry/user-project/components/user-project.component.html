@@ -1,98 +1,108 @@
 <div class=" order-md-1">
-    <h4 class="mb-3">Projet</h4>
-    <form [formGroup]="userProjectForm" (ngSubmit)="saveUserProject()">
+    <h4 class="mb-3">{{ 'PROJECT' | translate }}</h4>
+    <form   [formGroup] = "userProjectForm" 
+            (ngSubmit)  = "saveUserProject()">
         <div class="mb-3">
             <mat-form-field class="w-100">
-                <input type="text" placeholder="Intitulé du projet" matInput formControlName="entitle">
-
+                <input  type            = "text" 
+                        formControlName = "entitle"
+                        placeholder     = "{{ 'ENTITLE' | translate }}" 
+                        matInput>
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('entitle').invalid && (userProjectForm.get('entitle').dirty || userProjectForm.get('entitle').touched)"
-                class="alert alert-danger">
-
+            <div    *ngIf="userProjectForm.get('entitle').invalid && (userProjectForm.get('entitle').dirty || userProjectForm.get('entitle').touched)"
+                    class="alert alert-danger">
                 <div *ngIf="userProjectForm.get('entitle').errors.required">
-                    Intitulé du projet requis
+                        {{ 'ENTITLE' | translate }} {{ 'IS_REQUIRED' | translate }}
                 </div>
             </div>
         </div>
         <div class="mb-3">
-            <angular-editor [config]="configTextEditor" [placeholder]="'Description du Projet'"
-                formControlName="description"></angular-editor>
-            <div *ngIf="userProjectForm.get('description').invalid && (userProjectForm.get('description').dirty || userProjectForm.get('description').touched)"
-                class="alert alert-danger">
-
+            <angular-editor [config]        = "configTextEditor" 
+                            placeholder     = "{{ 'DESCRIPTION' | translate }}"
+                            formControlName = "description">
+            </angular-editor>
+            <div    *ngIf="userProjectForm.get('description').invalid && (userProjectForm.get('description').dirty || userProjectForm.get('description').touched)"
+                    class="alert alert-danger">
                 <div *ngIf="userProjectForm.get('description').errors.required">
-                    Description du projet requis
+                    {{ 'DESCRIPTION' | translate }} {{ 'IS_REQUIRED' | translate }}
                 </div>
             </div>
         </div>
         <div class="mb-3">
             <mat-form-field class="w-100">
-                <input type="text" placeholder="Nom de l'entreprise" matInput formControlName="enterpriseName">
-
+                <input  type            = "text" 
+                        formControlName = "enterpriseName"        
+                        placeholder     = "{{ 'ENTERPRISE' | translate }}" 
+                        matInput>
             </mat-form-field>
-            <div *ngIf="userProjectForm.get('enterpriseName').invalid && (userProjectForm.get('enterpriseName').dirty || userProjectForm.get('enterpriseName').touched)"
-                class="alert alert-danger"> 
-
+            <div    *ngIf="userProjectForm.get('enterpriseName').invalid && (userProjectForm.get('enterpriseName').dirty || userProjectForm.get('enterpriseName').touched)"
+                    class="alert alert-danger"> 
                 <div *ngIf="userProjectForm.get('enterpriseName').errors.required">
-                    Nom de l'entreprise requis
+                    {{ 'ENTERPRISE' | translate }} {{ 'IS_REQUIRED' | translate }}
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <mat-form-field class="w-100">
-                    <input matInput  [max]="maxStartDate" [matDatepicker]="pickerStart"
-                        placeholder="Du" formControlName="startDate">
+                    <input  matInput  
+                            formControlName="startDate"
+                            [max]           = "maxStartDate" 
+                            [matDatepicker] = "pickerStart"
+                            placeholder     = "{{ 'SINCE' | translate }}">
                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                     <mat-datepicker #pickerStart></mat-datepicker>
                 </mat-form-field>
-                <div *ngIf="userProjectForm.get('startDate').invalid && (userProjectForm.get('startDate').dirty || userProjectForm.get('startDate').touched)"
-                    class="alert alert-danger">
-
+                <div    *ngIf="userProjectForm.get('startDate').invalid && (userProjectForm.get('startDate').dirty || userProjectForm.get('startDate').touched)"
+                        class="alert alert-danger">
                     <div *ngIf="userProjectForm.get('startDate').errors.required">
-                        Date début requis
+                        {{ 'START_DATE' | translate }} {{ 'IS_REQUIRED' | translate }}
                     </div>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <mat-form-field class="w-100">
-                    <input matInput [min]="minEndDate"  [matDatepicker]="pickerEnd" placeholder="Au"
-                        formControlName="endDate">
+                    <input  matInput 
+                            formControlName = "endDate"
+                            [min]           = "minEndDate"  
+                            [matDatepicker] = "pickerEnd" 
+                            placeholder     = "{{ 'TO' | translate }}">
                     <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                     <mat-datepicker #pickerEnd></mat-datepicker>
                 </mat-form-field>
             </div>
         </div>
 
-
-
         <div class="mb-3">            
-            <app-lmt-autocomplete   formControlName="profiles" 
+            <app-lmt-autocomplete   formControlName         = "profiles" 
                                     [lmtAutocompleteParam]  = "lmtAutocompleteParamForProfile"
                                     [lmtAutocompleteConfig] = "lmtAutocompleteConfigForProfile">
             </app-lmt-autocomplete>
-            <div *ngIf="userProjectForm.get('profiles').invalid && (userProjectForm.get('profiles').dirty || userProjectForm.get('profiles').touched)"
-                class="alert alert-danger">
+            <div    *ngIf="userProjectForm.get('profiles').invalid && (userProjectForm.get('profiles').dirty || userProjectForm.get('profiles').touched)"
+                    class="alert alert-danger">
                 <div *ngIf="userProjectForm.get('profiles').errors.required">
-                    Rôles requis
+                    {{ 'ROLE' | translate }} {{ 'IS_REQUIRED' | translate }}
                 </div>
             </div>
         </div>
 
-
         <div class="mb-3">
-            <app-lmt-autocomplete   formControlName="skills"  
+            <app-lmt-autocomplete   formControlName         = "skills"  
                                     [lmtAutocompleteParam]  = "lmtAutocompleteParamForSkill"
                                     [lmtAutocompleteConfig] = "lmtAutocompleteConfigForSkill">
             </app-lmt-autocomplete>
-            <div *ngIf="userProjectForm.get('skills').invalid && (userProjectForm.get('skills').dirty || userProjectForm.get('skills').touched)"
-            class="alert alert-danger">
+            <div    *ngIf="userProjectForm.get('skills').invalid && (userProjectForm.get('skills').dirty || userProjectForm.get('skills').touched)"
+                    class="alert alert-danger">
                 <div *ngIf="userProjectForm.get('skills').errors.required">
-                    Skills requis
+                    {{ 'SKILL' | translate }} {{ 'IS_REQUIRED' | translate }}
                 </div>
             </div>
         </div>
 
-        <button class="btn btn-primary" type="submit" [disabled]="userProjectForm.invalid">Enregistrer</button>
+        <button class       = "btn btn-primary" 
+                type        = "submit" 
+                [disabled]  = "userProjectForm.invalid">
+            {{ 'SAVE' | translate }}
+        </button>
     </form>
 </div>

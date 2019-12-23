@@ -42,8 +42,8 @@ export class UserProjectComponent implements OnInit {
     this._referentialSkills$    = this.skillService.getSkills();
     this._referentialProfiles$  = this.profileService.getProfiles();
 
-    this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'skill'    };
-    this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'profile'  };
+    this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'SKILLS' };
+    this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'ROLES'  };
   }
 
   ngOnInit() {

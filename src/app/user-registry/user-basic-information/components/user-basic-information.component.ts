@@ -15,7 +15,7 @@ export class UserBasicInformationComponent implements OnInit {
   private _userBasicInformationForm: FormGroup;
 
   constructor( readonly router:           Router,
-               readonly employeeService:  EmployeeService ) { }
+               readonly employeeService:  EmployeeService) {}
 
   ngOnInit() {
     this.buildForm();
@@ -38,4 +38,5 @@ export class UserBasicInformationComponent implements OnInit {
   get userBasicInformationForm() {
     return this._userBasicInformationForm;
   }
+  
 }

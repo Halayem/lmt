@@ -1,19 +1,24 @@
-
 <mat-accordion class="mb-3">
-    <mat-expansion-panel *ngFor="let project of projects" class="m-3">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                {{ project.entitle }}
-            </mat-panel-title>
-            <mat-panel-description>
-                DU {{project.startDate | date:'shortDate'}} 
-                <span *ngIf="project.endDate" class="mx-3"> AU {{project.endDate | date:'shortDate'}} </span> 
-                <span *ngIf="!project.endDate" class="mx-3"> Jusqu'à aujourd'hui </span>
-                Chez {{ project.enterprise.name }}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div [innerHTML]="project.description"></div>
-        <div>Rôles: {{ project.profileIds.join(', ') }}</div>
-        <div>Competances: {{ project.skillIds.join(', ') }}</div>
-    </mat-expansion-panel>
-</mat-accordion>
+        <mat-expansion-panel *ngFor="let project of projects" class="m-3">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ project.entitle }}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ 'SINCE' | translate }} {{ project.startDate | date:'shortDate' }} 
+                    <span   *ngIf="project.endDate"   
+                            class="mx-3"> 
+                        {{ 'TO' | translate }} {{project.endDate | date:'shortDate'}} 
+                    </span> 
+                    <span   *ngIf="!project.endDate"  
+                            class="mx-3"> 
+                        {{ 'TO_TODAY' | translate }}
+                    </span>
+                    {{ 'AT' | translate }} {{ project.enterprise.name }}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div [innerHTML]="project.description"></div>
+            <div>{{ 'ROLES'  | translate }}: {{ project.profileIds.join(', ')   }}</div>
+            <div>{{ 'SKILLS' | translate }}: {{ project.skillIds.join(', ')     }}</div>
+        </mat-expansion-panel>
+    </mat-accordion>

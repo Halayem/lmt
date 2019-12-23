@@ -1,0 +1,31 @@
+{
+    "LASTNAME":     "nom",
+    "FIRSTNAME":    "prénom",
+    "CONTACT":      "coordonnée",
+    "PHONE":        "téléphone",
+    "EMAIL":        "email",
+
+    "PROJECT":      "projet",
+    "ENTITLE":      "intitulé",
+    "DESCRIPTION":  "description",
+    "ENTERPRISE":   "entreprise",
+
+    "ROLE":     "rôle",
+    "SKILL":    "compétence",
+    "ROLES":     "rôles",
+    "SKILLS":    "compétences",
+
+    "SINCE":    "depuis",
+    "TO":       "au",
+    "TO_TODAY": "jusqu'à aujourd'hui",
+    "AT":       "chez",
+
+    "SAVE": "enregistrer",
+    "ADD":  "ajouter",
+
+    "YOU":          "vous",
+    "YOURS":        "vos",
+    "IS_REQUIRED":  "est requis",
+    "IS_INVAID":    "est invalid",
+    "START_DATE":   "date début"
+}
