@@ -4,13 +4,16 @@ import { Observable } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { UserProjectService } from '../service/user-project.service';
 import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditorConfig';
-import { Project, Skill, Profile } from '../model/project';
+import { Skill, Profile } from '../model/project';
 import { SkillService } from '../service/skill.service';
 import { ProfileService } from '../service/profile.service';
 import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
 import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt-autocomplete/model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
 import { UserProjectMapper } from '../mapper/user-project';
+import { NgRedux } from '@angular-redux/store';
+import { SkillState } from '../reducer/skill';
+import { SkillActions } from '../action/skill';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
@@ -37,7 +40,10 @@ export class UserProjectComponent implements OnInit {
                 readonly skillService:        SkillService,
                 readonly profileService:      ProfileService,
                 readonly userProjectService:  UserProjectService,
-                readonly userProjectMapper:   UserProjectMapper ) {
+                readonly userProjectMapper:   UserProjectMapper,
+                
+                readonly skillNgRedux:        NgRedux<SkillState>,
+                readonly skillActions:        SkillActions) {
 
     this._referentialSkills$    = this.skillService.getSkills();
     this._referentialProfiles$  = this.profileService.getProfiles();
@@ -57,6 +63,8 @@ export class UserProjectComponent implements OnInit {
         attributeNameKey:       'id',
         researchFilter: ResearchFilter.NORMALIZED
       };
+
+      this.skillNgRedux.dispatch( this.skillActions.load() );
     });
 
     this._referentialSkills$.subscribe(skills => {
