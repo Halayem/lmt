@@ -50,6 +50,7 @@ export class UserProjectComponent implements OnInit {
 
     this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'SKILLS' };
     this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'ROLES'  };
+    this.skillActions.load();
   }
 
   ngOnInit() {
@@ -63,10 +64,24 @@ export class UserProjectComponent implements OnInit {
         attributeNameKey:       'id',
         researchFilter: ResearchFilter.NORMALIZED
       };
-
-      this.skillNgRedux.dispatch( this.skillActions.load() );
     });
 
+    this.skillNgRedux.select<Skill[]>('skills').subscribe(skills => {
+      console.log ( '#### SKILLS', skills );
+    });
+    console.log ( 'redux state:', this.skillNgRedux.getState() );
+    /*
+    this.skillNgRedux.select<Skill[]>('skills').subscribe(skills => {
+      this.lmtAutocompleteParamForSkill = {
+        datasource:             skills,
+        attributeNameToDisplay: 'name',
+        attributeNameForFilter: 'name',
+        attributeNameKey:       'id',
+        researchFilter: ResearchFilter.NORMALIZED
+      };
+    });
+    */
+    /*
     this._referentialSkills$.subscribe(skills => {
       this.lmtAutocompleteParamForSkill = {
         datasource:             skills,
@@ -76,6 +91,7 @@ export class UserProjectComponent implements OnInit {
         researchFilter: ResearchFilter.NORMALIZED
       };
     });
+    */
   }
 
   private createUserProjectForm(): void {

@@ -12,6 +12,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgReduxModule, NgRedux } from '@angular-redux/store';
 import { SkillState, skillReducer, INITIAL_STATE } from './user-registry/user-project/reducer/skill';
 import { SkillActions } from './user-registry/user-project/action/skill';
+import { SkillEpics } from './user-registry/user-project/epic/skill.epic';
+import { createEpicMiddleware } from 'redux-observable-es6-compat';
+import { createStore, applyMiddleware, compose } from 'redux';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeFr, 'fr');
@@ -34,7 +37,7 @@ registerLocaleData(localeFr, 'fr');
     routing
   ],
   providers: [
-    SkillActions,
+    SkillActions, SkillEpics,
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }, 
     { provide: LOCALE_ID,       useValue: 'fr'    },
     { provide: APP_INITIALIZER, useFactory: translateInitializerFn, multi: true, deps: [TranslateService] }
@@ -44,7 +47,20 @@ registerLocaleData(localeFr, 'fr');
 
 export class AppModule { 
 
-  constructor( skillNgRedux: NgRedux<SkillState> ) {
-    skillNgRedux.configureStore( skillReducer, INITIAL_STATE );
+  constructor( readonly skillNgRedux: NgRedux<SkillState>,
+               readonly skillEpics:    SkillEpics ) {
+  
+    const epicMiddleware = createEpicMiddleware();
+    
+    const store = createStore(
+                    skillReducer,
+                    applyMiddleware( epicMiddleware )
+                  );
+  
+                 epicMiddleware.run( this.skillEpics.load );
+    
+                  skillNgRedux.provideStore( store );
+  
+    // skillNgRedux.configureStore( skillReducer, INITIAL_STATE, createEpicMiddleware() );
   }
 }
