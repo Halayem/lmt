@@ -11,5 +11,5 @@ export const INITIAL_STATE: SkillState = {
 
 export function skillReducer( lastState: SkillState, action: any): SkillState {
     console.log ( 'skill reducer, last state:', lastState, ' action: ', action );
-    return action.payload;
+    return { skills: action.payload };
 };

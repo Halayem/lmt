@@ -53,7 +53,7 @@ export class UserProjectComponent implements OnInit {
     this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'ROLES'  };
     
     this.skillActions.load();
-    skillNgRedux.select<Skill[]>('').subscribe( data => {
+    skillNgRedux.select<Skill[]>('skills').subscribe( data => {
       console.log ( 'skill store content', data );
     });
     this.skills$.subscribe( data => {
