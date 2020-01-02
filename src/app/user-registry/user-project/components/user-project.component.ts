@@ -12,6 +12,8 @@ import { UserProjectMapper } from '../mapper/user-project';
 import { select } from '@angular-redux/store';
 import { SkillActions } from '../action/skill.action';
 import { ProfileActions } from '../action/profile.action';
+import { filter } from 'rxjs/operators';
+import * as R from 'ramda';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
@@ -52,25 +54,29 @@ export class UserProjectComponent implements OnInit {
     this.createUserProjectForm    ();
     this.setupProjectDateInterval ();
     
-    this._profilesReferential$.subscribe( profiles => {
-      this.lmtAutocompleteParamForProfile = {
-        datasource:             profiles,
-        attributeNameToDisplay: 'name',
-        attributeNameForFilter: 'name',
-        attributeNameKey:       'id',
-        researchFilter: ResearchFilter.NORMALIZED
-      };
-    });
+    this._profilesReferential$
+        .pipe     ( filter ( profiles => !R.isNil( profiles ) ) )
+        .subscribe( profiles => {
+          this.lmtAutocompleteParamForProfile = {
+            datasource:             profiles,
+            attributeNameToDisplay: 'name',
+            attributeNameForFilter: 'name',
+            attributeNameKey:       'id',
+            researchFilter: ResearchFilter.NORMALIZED
+          };
+        });
 
-    this._skillsReferential$.subscribe( skills => {
-      this.lmtAutocompleteParamForSkill = {
-        datasource:             skills,
-        attributeNameToDisplay: 'name',
-        attributeNameForFilter: 'name',
-        attributeNameKey:       'id',
-        researchFilter: ResearchFilter.NORMALIZED
-      };
-    });
+    this._skillsReferential$
+        .pipe     ( filter ( skills => !R.isNil( skills ) ) )
+        .subscribe( skills => {
+          this.lmtAutocompleteParamForSkill = {
+            datasource:             skills,
+            attributeNameToDisplay: 'name',
+            attributeNameForFilter: 'name',
+            attributeNameKey:       'id',
+            researchFilter: ResearchFilter.NORMALIZED
+          };
+        });
     
   }
 

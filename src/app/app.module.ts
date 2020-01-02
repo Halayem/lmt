@@ -51,38 +51,17 @@ registerLocaleData(localeFr, 'fr');
 
 export class AppModule { 
 
-  private _storeEnhancers:  StoreEnhancer<any> | any;
-  private _devTools:        DevToolsExtension;
-
   constructor( ngRedux:       NgRedux<any>,
                skillEpics:    SkillEpics,
                profileEpics:  ProfileEpics,
                devTools:      DevToolsExtension ) {
     
-    this._devTools = devTools;
-    this.setupStoreEnhancersWhenDevtoosIsEnabled();
+    
+    const rootReducer     = combineReducers( { skills: skillReducer, profiles: profileReducer } );
+    const epicMiddleware  = createEpicMiddleware();
+    const storeEnhancers  = devTools.isEnabled() ? [ devTools.enhancer() ]: [];            
 
-    const epicMiddleware = createEpicMiddleware();
-    const rootReducer: any = combineReducers( { skills: skillReducer, profiles: profileReducer } );
-
-    ngRedux.configureStore 
-    (  
-      rootReducer,
-      {}, 
-      [epicMiddleware], 
-      this._storeEnhancers 
-    );
-
-    epicMiddleware.run( 
-      combineEpics( 
-        skillEpics.load, 
-        profileEpics.load 
-      ) 
-    );
+    ngRedux.configureStore( rootReducer, {}, [epicMiddleware], storeEnhancers );
+    epicMiddleware.run( combineEpics( skillEpics.load, profileEpics.load ) );
   }
-
-  private setupStoreEnhancersWhenDevtoosIsEnabled(): void {
-    this._storeEnhancers = this._devTools.isEnabled() ? [ this._devTools.enhancer() ]: [];
-  }
- 
 }
