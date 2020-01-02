@@ -9,6 +9,15 @@ import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-transla
 import { HttpClient } from '@angular/common/http';
 import { HttpLoaderFactory, translateInitializerFn } from './app.init';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
+import { SkillState, skillReducer, SKILL_INITIAL_STATE } from './user-registry/user-project/reducer/skill.reducer';
+import { SkillActions } from './user-registry/user-project/action/skill.action';
+import { SkillEpics } from './user-registry/user-project/epic/skill.epic';
+import { createEpicMiddleware, combineEpics } from 'redux-observable-es6-compat';
+import { StoreEnhancer, combineReducers } from 'redux';
+import { ProfileState, profileReducer, PROFILE_INITIAL_STATE } from './user-registry/user-project/reducer/profile.reducer';
+import { ProfileEpics } from './user-registry/user-project/epic/profile.epic';
+import { ProfileActions } from './user-registry/user-project/action/profile.action';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeFr, 'fr');
@@ -20,6 +29,7 @@ registerLocaleData(localeFr, 'fr');
   imports: [
     UserRegistryModule,
     BrowserModule,
+    NgReduxModule,
     TranslateModule.forRoot({
       loader: {
         provide:    TranslateLoader,
@@ -30,6 +40,8 @@ registerLocaleData(localeFr, 'fr');
     routing
   ],
   providers: [
+    SkillActions,   SkillEpics,
+    ProfileActions, ProfileEpics,
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }, 
     { provide: LOCALE_ID,       useValue: 'fr'    },
     { provide: APP_INITIALIZER, useFactory: translateInitializerFn, multi: true, deps: [TranslateService] }
@@ -37,4 +49,19 @@ registerLocaleData(localeFr, 'fr');
   bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule { 
+
+  constructor( ngRedux:       NgRedux<any>,
+               skillEpics:    SkillEpics,
+               profileEpics:  ProfileEpics,
+               devTools:      DevToolsExtension ) {
+    
+    
+    const rootReducer     = combineReducers( { skills: skillReducer, profiles: profileReducer } );
+    const epicMiddleware  = createEpicMiddleware();
+    const storeEnhancers  = devTools.isEnabled() ? [ devTools.enhancer() ]: [];            
+
+    ngRedux.configureStore( rootReducer, {}, [epicMiddleware], storeEnhancers );
+    epicMiddleware.run( combineEpics( skillEpics.load, profileEpics.load ) );
+  }
+}

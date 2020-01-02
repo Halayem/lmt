@@ -4,13 +4,16 @@ import { Observable } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { UserProjectService } from '../service/user-project.service';
 import { lmtWysiwygHtmlEditorConfig } from '../../../config/lmtWysiwygHtmlEditorConfig';
-import { Project, Skill, Profile } from '../model/project';
-import { SkillService } from '../service/skill.service';
-import { ProfileService } from '../service/profile.service';
+import { Skill, Profile } from '../model/project';
 import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/components/lmt-autocomplete/model/lmt-autocomplete-param';
 import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt-autocomplete/model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
 import { UserProjectMapper } from '../mapper/user-project';
+import { select } from '@angular-redux/store';
+import { SkillActions } from '../action/skill.action';
+import { ProfileActions } from '../action/profile.action';
+import { filter } from 'rxjs/operators';
+import * as R from 'ramda';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
@@ -18,8 +21,9 @@ import { UserProjectMapper } from '../mapper/user-project';
 })
 export class UserProjectComponent implements OnInit {
 
-  private _referentialSkills$:    Observable<Skill[]>;
-  private _referentialProfiles$:  Observable<Profile[]>;
+  @select( 'skills'   ) private _skillsReferential$:    Observable<Skill[]>;
+  @select( 'profiles' ) private _profilesReferential$:  Observable<Profile[]>;  
+
   private _userProjectForm:       FormGroup;
   private _maxStartDate:          Date = new Date();
   private _minEndDate:            Date;
@@ -34,13 +38,13 @@ export class UserProjectComponent implements OnInit {
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
 
   constructor(  readonly formBuilder:         FormBuilder,
-                readonly skillService:        SkillService,
-                readonly profileService:      ProfileService,
                 readonly userProjectService:  UserProjectService,
-                readonly userProjectMapper:   UserProjectMapper ) {
+                readonly userProjectMapper:   UserProjectMapper,
+                readonly skillActions:        SkillActions,
+                readonly profileActions:      ProfileActions ) {
 
-    this._referentialSkills$    = this.skillService.getSkills();
-    this._referentialProfiles$  = this.profileService.getProfiles();
+    this.skillActions.load();
+    this.profileActions.load();
 
     this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'SKILLS' };
     this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'ROLES'  };
@@ -49,25 +53,31 @@ export class UserProjectComponent implements OnInit {
   ngOnInit() {
     this.createUserProjectForm    ();
     this.setupProjectDateInterval ();
-    this._referentialProfiles$.subscribe(profiles => {
-      this.lmtAutocompleteParamForProfile = {
-        datasource:             profiles,
-        attributeNameToDisplay: 'name',
-        attributeNameForFilter: 'name',
-        attributeNameKey:       'id',
-        researchFilter: ResearchFilter.NORMALIZED
-      };
-    });
+    
+    this._profilesReferential$
+        .pipe     ( filter ( profiles => !R.isNil( profiles ) ) )
+        .subscribe( profiles => {
+          this.lmtAutocompleteParamForProfile = {
+            datasource:             profiles,
+            attributeNameToDisplay: 'name',
+            attributeNameForFilter: 'name',
+            attributeNameKey:       'id',
+            researchFilter: ResearchFilter.NORMALIZED
+          };
+        });
 
-    this._referentialSkills$.subscribe(skills => {
-      this.lmtAutocompleteParamForSkill = {
-        datasource:             skills,
-        attributeNameToDisplay: 'name',
-        attributeNameForFilter: 'name',
-        attributeNameKey:       'id',
-        researchFilter: ResearchFilter.NORMALIZED
-      };
-    });
+    this._skillsReferential$
+        .pipe     ( filter ( skills => !R.isNil( skills ) ) )
+        .subscribe( skills => {
+          this.lmtAutocompleteParamForSkill = {
+            datasource:             skills,
+            attributeNameToDisplay: 'name',
+            attributeNameForFilter: 'name',
+            attributeNameKey:       'id',
+            researchFilter: ResearchFilter.NORMALIZED
+          };
+        });
+    
   }
 
   private createUserProjectForm(): void {
