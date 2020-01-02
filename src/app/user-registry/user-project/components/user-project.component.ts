@@ -11,7 +11,7 @@ import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/comp
 import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt-autocomplete/model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
 import { UserProjectMapper } from '../mapper/user-project';
-import { NgRedux } from '@angular-redux/store';
+import { NgRedux, select } from '@angular-redux/store';
 import { SkillState } from '../reducer/skill';
 import { SkillActions } from '../action/skill';
 @Component({
@@ -36,13 +36,14 @@ export class UserProjectComponent implements OnInit {
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
 
+  @select() skills$: Observable<any>;
   constructor(  readonly formBuilder:         FormBuilder,
                 readonly skillService:        SkillService,
                 readonly profileService:      ProfileService,
                 readonly userProjectService:  UserProjectService,
                 readonly userProjectMapper:   UserProjectMapper,
                 
-                readonly skillNgRedux:        NgRedux<SkillState>,
+                skillNgRedux:        NgRedux<SkillState>,
                 readonly skillActions:        SkillActions) {
 
     this._referentialSkills$    = this.skillService.getSkills();
@@ -50,7 +51,16 @@ export class UserProjectComponent implements OnInit {
 
     this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'SKILLS' };
     this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'ROLES'  };
+    
     this.skillActions.load();
+    skillNgRedux.select<Skill[]>('').subscribe( data => {
+      console.log ( 'skill store content', data );
+    });
+    this.skills$.subscribe( data => {
+      console.log ( 'anis: ', data );
+    })
+    console.log ( 'redux state:', skillNgRedux.getState() );
+
   }
 
   ngOnInit() {
@@ -66,10 +76,6 @@ export class UserProjectComponent implements OnInit {
       };
     });
 
-    this.skillNgRedux.select<Skill[]>('skills').subscribe(skills => {
-      console.log ( '#### SKILLS', skills );
-    });
-    console.log ( 'redux state:', this.skillNgRedux.getState() );
     /*
     this.skillNgRedux.select<Skill[]>('skills').subscribe(skills => {
       this.lmtAutocompleteParamForSkill = {

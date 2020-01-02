@@ -9,7 +9,6 @@ export function HttpLoaderFactory( http: HttpClient ) {
   
   export const translateInitializerFn = ( translate: TranslateService ) => {
     return () => {
-        console.log ( '***', translate );
         return translate.setDefaultLang( 'fr' );
     };
   };

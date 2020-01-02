@@ -10,7 +10,6 @@ export class SkillActions {
     constructor( readonly skillNgRedux: NgRedux<SkillState> ) {}
 
     public load() {
-        console.log( '*** SkillActions::load' );
         this.skillNgRedux.dispatch({ 
             type:    'LOAD',
             payload:  null 

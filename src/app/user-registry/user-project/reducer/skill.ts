@@ -10,7 +10,6 @@ export const INITIAL_STATE: SkillState = {
 };
 
 export function skillReducer( lastState: SkillState, action: any): SkillState {
-    console.log ( '*** Skill Reducer working ***, state:', lastState, ' action: ', action.payload );
+    console.log ( 'skill reducer, last state:', lastState, ' action: ', action );
     return action.payload;
 };
-
