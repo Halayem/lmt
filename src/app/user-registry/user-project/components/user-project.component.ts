@@ -11,8 +11,7 @@ import { LmtAutocompleteParameter, ResearchFilter } from './../../../shared/comp
 import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt-autocomplete/model/lmt-autocomplete-config';
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
 import { UserProjectMapper } from '../mapper/user-project';
-import { NgRedux, select } from '@angular-redux/store';
-import { SkillState } from '../reducer/skill';
+import { select } from '@angular-redux/store';
 import { SkillActions } from '../action/skill';
 @Component({
   selector:     'app-user-project',
@@ -21,7 +20,8 @@ import { SkillActions } from '../action/skill';
 })
 export class UserProjectComponent implements OnInit {
 
-  private _referentialSkills$:    Observable<Skill[]>;
+  @select( 'skills' ) private _skillsReferential$: Observable<Skill[]>;
+
   private _referentialProfiles$:  Observable<Profile[]>;
   private _userProjectForm:       FormGroup;
   private _maxStartDate:          Date = new Date();
@@ -36,31 +36,18 @@ export class UserProjectComponent implements OnInit {
 
   configTextEditor: AngularEditorConfig = lmtWysiwygHtmlEditorConfig;
 
-  @select() skills$: Observable<any>;
   constructor(  readonly formBuilder:         FormBuilder,
                 readonly skillService:        SkillService,
                 readonly profileService:      ProfileService,
                 readonly userProjectService:  UserProjectService,
                 readonly userProjectMapper:   UserProjectMapper,
-                
-                skillNgRedux:        NgRedux<SkillState>,
                 readonly skillActions:        SkillActions) {
 
-    this._referentialSkills$    = this.skillService.getSkills();
+    this.skillActions.load();
     this._referentialProfiles$  = this.profileService.getProfiles();
 
     this._lmtAutocompleteConfigForSkill   = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'SKILLS' };
     this._lmtAutocompleteConfigForProfile = { ...LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION, placeholder: 'ROLES'  };
-    
-    this.skillActions.load();
-    skillNgRedux.select<Skill[]>('skills').subscribe( data => {
-      console.log ( 'skill store content', data );
-    });
-    this.skills$.subscribe( data => {
-      console.log ( 'anis: ', data );
-    })
-    console.log ( 'redux state:', skillNgRedux.getState() );
-
   }
 
   ngOnInit() {
@@ -76,8 +63,7 @@ export class UserProjectComponent implements OnInit {
       };
     });
 
-    /*
-    this.skillNgRedux.select<Skill[]>('skills').subscribe(skills => {
+    this._skillsReferential$.subscribe( skills => {
       this.lmtAutocompleteParamForSkill = {
         datasource:             skills,
         attributeNameToDisplay: 'name',
@@ -86,18 +72,6 @@ export class UserProjectComponent implements OnInit {
         researchFilter: ResearchFilter.NORMALIZED
       };
     });
-    */
-    /*
-    this._referentialSkills$.subscribe(skills => {
-      this.lmtAutocompleteParamForSkill = {
-        datasource:             skills,
-        attributeNameToDisplay: 'name',
-        attributeNameForFilter: 'name',
-        attributeNameKey:       'id',
-        researchFilter: ResearchFilter.NORMALIZED
-      };
-    });
-    */
   }
 
   private createUserProjectForm(): void {

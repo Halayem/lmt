@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Action } from 'redux';
 import { NgRedux } from '@angular-redux/store';
 import { SkillState } from '../reducer/skill';
 
 @Injectable()
 export class SkillActions {
-    static LOAD = 'LOAD';
+    public static readonly COMMAND_SKILL_LOAD = 'COMMAND_SKILL_LOAD';
+    public static readonly EVENT_SKILL_LOADED = 'EVENT_SKILL_LOADED';
 
     constructor( readonly skillNgRedux: NgRedux<SkillState> ) {}
 
-    public load() {
-        this.skillNgRedux.dispatch({ 
-            type:    'LOAD',
-            payload:  null 
-        });
+    public load(): void {
+        this.skillNgRedux.dispatch({ type: SkillActions.COMMAND_SKILL_LOAD, payload: null });
     }
 }

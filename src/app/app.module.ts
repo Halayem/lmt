@@ -10,11 +10,11 @@ import { HttpClient } from '@angular/common/http';
 import { HttpLoaderFactory, translateInitializerFn } from './app.init';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
-import { SkillState, skillReducer, INITIAL_STATE } from './user-registry/user-project/reducer/skill';
+import { SkillState, skillReducer, SKILL_INITIAL_STATE } from './user-registry/user-project/reducer/skill';
 import { SkillActions } from './user-registry/user-project/action/skill';
 import { SkillEpics } from './user-registry/user-project/epic/skill.epic';
 import { createEpicMiddleware, combineEpics } from 'redux-observable-es6-compat';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { StoreEnhancer } from 'redux';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeFr, 'fr');
@@ -47,26 +47,28 @@ registerLocaleData(localeFr, 'fr');
 
 export class AppModule { 
 
-  constructor( skillNgRedux: NgRedux<SkillState>,
+  private _storeEnhancers:  StoreEnhancer<any> | any;
+  private _devTools:        DevToolsExtension;
+
+  constructor( skillNgRedux:  NgRedux<SkillState>,
                skillEpics:    SkillEpics,
-               devTools: DevToolsExtension ) {
-  
-    const storeEnhancers = devTools.isEnabled() ? // <- New
-                          [ devTools.enhancer() ] : // <- New
-                          []; // <- New
+               devTools:      DevToolsExtension ) {
+    
+    this._devTools = devTools;
+    this.setupStoreEnhancersWhenDevtoosIsEnabled();
+    this.configureSkillStore( skillNgRedux, skillEpics );
+  }
+
+  private configureSkillStore( skillNgRedux:  NgRedux<SkillState>,
+                               skillEpics:    SkillEpics ): void {
 
     const epicMiddleware = createEpicMiddleware();
-    skillNgRedux.configureStore( skillReducer, INITIAL_STATE, [epicMiddleware], storeEnhancers );
-    epicMiddleware.run( combineEpics( skillEpics.load ) );
-    
-    /*
-    const store = createStore(
-                    skillReducer,
-                    applyMiddleware( epicMiddleware )
-                  );
-    epicMiddleware.run( this.skillEpics.load );
-    skillNgRedux.provideStore( store );
-    */
-    // skillNgRedux.configureStore( skillReducer, INITIAL_STATE );
+    skillNgRedux.configureStore ( skillReducer, SKILL_INITIAL_STATE, [epicMiddleware], this._storeEnhancers );
+    epicMiddleware.run          ( combineEpics( skillEpics.load ) );
   }
+
+  private setupStoreEnhancersWhenDevtoosIsEnabled(): void {
+    this._storeEnhancers = this._devTools.isEnabled() ? [ this._devTools.enhancer() ]: [];
+  }
+ 
 }
