@@ -9,13 +9,16 @@ export const SKILL_INITIAL_STATE: SkillState = {
     skills: []
 };
 
-export function skillReducer( lastState: SkillState, action: any ): SkillState {
+export function skillReducer( lastState: SkillState, action: any ): any {
     console.info ( 'input parameters - last state: <', lastState, '> action: <', action, '>' );
     switch ( action.type ) {
-        case SkillActions.EVENT_SKILL_LOADED: return <SkillState> { skills: action.payload };
+        case SkillActions.EVENT_SKILL_LOADED: return action.payload ;
         default: {
             console.info ( 'unhandled action type for this reducer, returning last state' );
-            return lastState;
+            if ( typeof lastState === 'undefined' ) {
+                return null;
+            }
+            return lastState; 
         } 
     }
 };
