@@ -1,5 +1,5 @@
 import { Skill } from '../model/project';
-import { SkillActions } from '../action/skill';
+import { SkillActions } from '../action/skill.action';
 
 export interface SkillState {
     skills: Skill[]

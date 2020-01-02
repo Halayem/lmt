@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { SkillState } from '../reducer/skill';
+import { SkillState } from '../reducer/skill.reducer';
 
 @Injectable()
 export class SkillActions {

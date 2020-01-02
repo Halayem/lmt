@@ -1,7 +1,7 @@
 import { SkillService } from '../service/skill.service';
 import { Injectable } from '@angular/core';
 import { ActionsObservable, ofType } from 'redux-observable-es6-compat';
-import { SkillActions } from '../action/skill';
+import { SkillActions } from '../action/skill.action';
 import { Action } from 'redux';
 import { mergeMap, map } from 'rxjs/operators';
 

@@ -12,7 +12,7 @@ import { LmtAutocompleteConfigurationModel } from 'src/app/shared/components/lmt
 import { LMT_AUTO_COMPLETE_DEFAULT_CONFIGURATION } from 'src/app/shared/components/lmt-autocomplete/config/lmt-autocomplete-configs';
 import { UserProjectMapper } from '../mapper/user-project';
 import { select } from '@angular-redux/store';
-import { SkillActions } from '../action/skill';
+import { SkillActions } from '../action/skill.action';
 @Component({
   selector:     'app-user-project',
   templateUrl:  './user-project.component.html',
